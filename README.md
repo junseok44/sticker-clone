@@ -1,46 +1,12 @@
-# Getting Started with Create React App
+문제.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. store class를 만들어서 그거를 app에다 넣어주고 객체 인스턴스를 만들어줬는데
+   이렇게 하면 문제는 뭐냐하면은. todo에 뭐가 추가되어도 렌더링이 안된다. 다만 react가
+   관리하는 state는 렌더링이 되는데. 그러니까 mobx의 경우 observable하게 해줘서. 그 값을 tracking하고. mobx-react가 그걸 확인하고 리 렌더링하는것
 
-## Available Scripts
+2.
 
-In the project directory, you can run:
+궁금한점.
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. 왜 app에서 observer를 해주면. 안에 있는 memo는 재깍 렌더링이 안되는거지?
+2.
