@@ -20,7 +20,14 @@ const App = ({ store }: { store: TtodoStore }) => {
   return (
     <div>
       <button onClick={addMemo}>addMemo</button>
-      <div style={{ position: "relative" }}>
+      <div
+        style={{
+          position: "relative",
+          border: "1px solid black",
+          width: "100%",
+          height: "200vh",
+        }}
+      >
         {store.todo.map((todo, index) => (
           <Memo item={todo} index={index} changePos={changePos}></Memo>
         ))}
