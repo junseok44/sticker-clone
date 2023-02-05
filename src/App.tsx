@@ -5,7 +5,7 @@ import Memo from "./Memo";
 
 const App = ({ store }: { store: TtodoStore }) => {
   const [input, setInput] = useState<string>("");
-
+  const [movingId, setmovingId] = useState<number | null>(null);
   const addMemo = useCallback(() => {
     store.addMemo();
   }, [store]);
@@ -16,10 +16,17 @@ const App = ({ store }: { store: TtodoStore }) => {
     },
     [store]
   );
+  const onMouseMove = (e: React.MouseEvent) => {
+    console.log("mouse moving", e.pageX, e.pageY);
+    // 여기서 대상 객체의 위치를 변경해야함.
+    if (movingId !== null) {
+      changePos(movingId, e.pageX - 100, e.pageY - 100);
+    }
+  };
 
   return (
     <div>
-      <button onClick={addMemo}>addMemo</button>
+      <button onClick={addMemo}>addMemo {movingId} </button>
       <div
         style={{
           position: "relative",
@@ -27,9 +34,10 @@ const App = ({ store }: { store: TtodoStore }) => {
           width: "100%",
           height: "200vh",
         }}
+        onMouseMove={onMouseMove}
       >
         {store.todo.map((todo, index) => (
-          <Memo item={todo} index={index} changePos={changePos}></Memo>
+          <Memo item={todo} index={index} setmovingId={setmovingId}></Memo>
         ))}
       </div>
     </div>
