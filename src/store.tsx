@@ -7,6 +7,8 @@ export class todoItem implements Ttodo {
   x = 20;
   y = 20;
   zIndex = 0;
+  width = 200;
+  height = 200;
 
   constructor(zIndex: number) {
     this.zIndex = zIndex;
@@ -30,6 +32,23 @@ export class todoStore implements TtodoStore {
       editMemo: action,
     });
   }
+
+  addMemo() {
+    this.todo.push(new todoItem(this.todo.length));
+    // 이때 length값은 0이므로. zIndex값은 0부터 생성도니다.
+  }
+
+  editMemo(id: number, msg: string) {
+    const todoItem123 = this.todo.find((item) => item.date === id);
+    if (todoItem123) todoItem123.msg = msg;
+  }
+
+  changePosition(id: number, xPos: number, yPos: number) {
+    const index = this.todo.findIndex((item) => item.date === id);
+    this.todo[index].x = xPos;
+    this.todo[index].y = yPos;
+  }
+
   changeZIndex(id: number) {
     const todoItem = this.todo.find((item) => item.date === id);
     if (todoItem) {
@@ -47,19 +66,9 @@ export class todoStore implements TtodoStore {
     }
   }
 
-  addMemo() {
-    this.todo.push(new todoItem(this.todo.length));
-    // 이때 length값은 0이므로. zIndex값은 0부터 생성도니다.
-  }
-
-  editMemo(id: number, msg: string) {
-    const todoItem123 = this.todo.find((item) => item.date === id);
-    if (todoItem123) todoItem123.msg = msg;
-  }
-
-  changePosition(id: number, xPos: number, yPos: number) {
-    const index = this.todo.findIndex((item) => item.date === id);
-    this.todo[index].x = xPos;
-    this.todo[index].y = yPos;
+  changeSize(id: number, width: number, height: number) {
+    this.todo = this.todo.map((item) =>
+      item.date === id ? { ...item, width: width, height: height } : item
+    );
   }
 }

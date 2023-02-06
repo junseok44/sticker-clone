@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { TtodoStore } from "./types";
 import { toJS } from "mobx";
 import { observer } from "mobx-react";
 import Memo from "./Memo";
 
 const App = ({ store }: { store: TtodoStore }) => {
-  const [input, setInput] = useState<string>("");
   const [movingId, setmovingId] = useState<number | null>(null);
 
   const addMemo = useCallback(() => {
@@ -36,10 +35,20 @@ const App = ({ store }: { store: TtodoStore }) => {
   const onMouseMove = useCallback(
     (e: React.MouseEvent) => {
       if (movingId !== null) {
-        changePos(movingId, e.pageX - 100, e.pageY - 100);
+        changePos(movingId, e.pageX - 100, e.pageY - 10);
+        // FIXME 이부분도 100이 아니라 스티커 메모 사이즈의 절반만큼이 되어야하는데..
+        // 그럼 이거를 sotre clas
+        store.changeZIndex(movingId);
       }
     },
     [movingId, changePos]
+  );
+
+  const changeSize = useCallback(
+    (id: number, width: number, height: number) => {
+      store.changeSize(id, width, height);
+    },
+    [store]
   );
 
   return (
@@ -56,18 +65,24 @@ const App = ({ store }: { store: TtodoStore }) => {
         <button onClick={addMemo}>addMemo {movingId} </button>
         <button
           onClick={() => {
-            store.todo.map((item) => console.log(toJS(item).zIndex));
+            console.log(
+              store.todo.map((item) => {
+                return toJS(item);
+              })
+            );
           }}
         >
           console todo List
         </button>
         {store.todo.map((todo, index) => (
           <Memo
+            key={index}
             item={todo}
             index={index}
             setmovingId={setmovingId}
             editMemo={editMemo}
             changeZIndex={changeZIndex}
+            changeSize={changeSize}
           ></Memo>
         ))}
       </div>
