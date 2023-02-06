@@ -6,10 +6,12 @@ const Memo = ({
   item,
   index,
   setmovingId,
+  editMemo,
 }: {
   item: Ttodo;
   index: number;
   setmovingId: React.Dispatch<React.SetStateAction<number | null>>;
+  editMemo: (id: number, msg: string) => void;
 }) => {
   // const onDragHandler = (e: React.DragEvent) => {
   //   e.dataTransfer.dropEffect = "move";
@@ -25,6 +27,10 @@ const Memo = ({
     setmovingId(null);
   };
 
+  const onChangeMemo = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    editMemo(item.date, e.target.value);
+  };
+
   return (
     <div
       // draggable={true}
@@ -34,6 +40,7 @@ const Memo = ({
       style={{
         width: "200px",
         height: "200px",
+        backgroundColor: "white",
         border: "1px solid black",
         position: "absolute",
         left: item.x,
@@ -41,7 +48,7 @@ const Memo = ({
       }}
     >
       <h1>this is memo {index}</h1>
-      <textarea></textarea>
+      <textarea value={item.msg} onChange={onChangeMemo}></textarea>
     </div>
   );
 };

@@ -24,11 +24,18 @@ export class todoStore implements TtodoStore {
     makeAutoObservable(this, {
       todo: observable,
       addMemo: action,
+      editMemo: action,
     });
   }
 
   addMemo() {
     this.todo.push(new todoItem());
+  }
+
+  editMemo(id: number, msg: string) {
+    this.todo.map((todoItem) =>
+      todoItem.date == id ? { ...todoItem, msg: msg } : todoItem
+    );
   }
 
   changePosition(id: number, xPos: number, yPos: number) {

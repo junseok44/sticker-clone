@@ -1,6 +1,7 @@
 export interface TtodoStore {
   todo: Ttodo[];
   addMemo: () => void;
+  editMemo: (id: number, msg: string) => void;
   changePosition: (id: number, xPos: number, yPos: number) => void;
 }
 
