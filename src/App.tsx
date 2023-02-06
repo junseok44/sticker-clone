@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { TtodoStore } from "./types";
+import { toJS } from "mobx";
 import { observer } from "mobx-react";
 import Memo from "./Memo";
 
@@ -14,6 +15,13 @@ const App = ({ store }: { store: TtodoStore }) => {
   const changePos = useCallback(
     (id: number, xPos: number, yPos: number) => {
       store.changePosition(id, xPos, yPos);
+    },
+    [store]
+  );
+
+  const changeZIndex = useCallback(
+    (id: number) => {
+      store.changeZIndex(id);
     },
     [store]
   );
@@ -36,7 +44,6 @@ const App = ({ store }: { store: TtodoStore }) => {
 
   return (
     <div>
-      <button onClick={addMemo}>addMemo {movingId} </button>
       <div
         style={{
           position: "relative",
@@ -46,12 +53,21 @@ const App = ({ store }: { store: TtodoStore }) => {
         }}
         onMouseMove={onMouseMove}
       >
+        <button onClick={addMemo}>addMemo {movingId} </button>
+        <button
+          onClick={() => {
+            store.todo.map((item) => console.log(toJS(item).zIndex));
+          }}
+        >
+          console todo List
+        </button>
         {store.todo.map((todo, index) => (
           <Memo
             item={todo}
             index={index}
             setmovingId={setmovingId}
             editMemo={editMemo}
+            changeZIndex={changeZIndex}
           ></Memo>
         ))}
       </div>

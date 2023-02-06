@@ -3,6 +3,7 @@ export interface TtodoStore {
   addMemo: () => void;
   editMemo: (id: number, msg: string) => void;
   changePosition: (id: number, xPos: number, yPos: number) => void;
+  changeZIndex: (id: number) => void;
 }
 
 export interface Ttodo {
@@ -10,4 +11,5 @@ export interface Ttodo {
   date: number;
   x: number;
   y: number;
+  zIndex: number;
 }

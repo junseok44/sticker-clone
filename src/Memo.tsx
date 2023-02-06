@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Ttodo } from "./types";
 import { observer } from "mobx-react";
 
@@ -7,18 +7,19 @@ const Memo = ({
   index,
   setmovingId,
   editMemo,
+  changeZIndex,
 }: {
   item: Ttodo;
   index: number;
   setmovingId: React.Dispatch<React.SetStateAction<number | null>>;
   editMemo: (id: number, msg: string) => void;
+  changeZIndex: (id: number) => void;
 }) => {
-  // const onDragHandler = (e: React.DragEvent) => {
-  //   e.dataTransfer.dropEffect = "move";
-  //   console.log(e.clientX, e.clientY);
-  //   changePos(item.date, e.clientX, e.clientY);
-  // };
-  let isMoving = false;
+  const [memoInput, setmemoInput] = useState<string>(item.msg);
+
+  useEffect(() => {
+    editMemo(item.date, memoInput);
+  }, [memoInput]);
 
   const onMouseDown = () => {
     setmovingId(item.date);
@@ -28,7 +29,8 @@ const Memo = ({
   };
 
   const onChangeMemo = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    editMemo(item.date, e.target.value);
+    setmemoInput(e.target.value);
+    // 여기서 setmemoInput을 하지만 값이 바뀌는건 나중에 된다.
   };
 
   return (
@@ -37,6 +39,7 @@ const Memo = ({
       // onDragEnd={onDragHandler}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
+      onClick={() => changeZIndex(item.date)}
       style={{
         width: "200px",
         height: "200px",
@@ -45,10 +48,11 @@ const Memo = ({
         position: "absolute",
         left: item.x,
         top: item.y,
+        zIndex: item.zIndex,
       }}
     >
       <h1>this is memo {index}</h1>
-      <textarea value={item.msg} onChange={onChangeMemo}></textarea>
+      <textarea value={memoInput} onChange={onChangeMemo}></textarea>
     </div>
   );
 };
