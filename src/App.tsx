@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from "react";
-import { TtodoStore } from "./types";
+import { TmovingObj, TtodoStore } from "./types";
 import { toJS } from "mobx";
 import { observer } from "mobx-react";
 import Memo from "./Memo";
 
 const App = ({ store }: { store: TtodoStore }) => {
-  const [movingId, setmovingId] = useState<number | null>(null);
+  const [movingObj, setmovingObj] = useState<TmovingObj | null>(null);
 
   const addMemo = useCallback(() => {
     store.addMemo();
@@ -34,22 +34,30 @@ const App = ({ store }: { store: TtodoStore }) => {
 
   const onMouseMove = useCallback(
     (e: React.MouseEvent) => {
-      if (movingId !== null) {
-        changePos(movingId, e.pageX - 100, e.pageY - 10);
-        // FIXME 이부분도 100이 아니라 스티커 메모 사이즈의 절반만큼이 되어야하는데..
-        // 그럼 이거를 sotre clas
-        store.changeZIndex(movingId);
+      if (movingObj !== null) {
+        e.stopPropagation();
+        changePos(
+          movingObj.id,
+          e.pageX - movingObj.offsetX,
+          e.pageY - movingObj.offsetY
+        );
+
+        store.changeZIndex(movingObj.id);
       }
     },
-    [movingId, changePos]
+    [movingObj, changePos]
   );
 
   const changeSize = useCallback(
-    (id: number, width: number, height: number) => {
-      store.changeSize(id, width, height);
+    (id: number, width: number | undefined, height: number | undefined) => {
+      if (width && height) {
+        store.changeSize(id, width, height);
+      }
     },
     [store]
   );
+
+  const removeMemo = useCallback(() => {}, []);
 
   return (
     <div>
@@ -60,9 +68,8 @@ const App = ({ store }: { store: TtodoStore }) => {
           width: "100%",
           height: "200vh",
         }}
-        onMouseMove={onMouseMove}
       >
-        <button onClick={addMemo}>addMemo {movingId} </button>
+        <button onClick={addMemo}>addMemo {movingObj?.id} </button>
         <button
           onClick={() => {
             console.log(
@@ -79,10 +86,11 @@ const App = ({ store }: { store: TtodoStore }) => {
             key={index}
             item={todo}
             index={index}
-            setmovingId={setmovingId}
+            setmovingObj={setmovingObj}
             editMemo={editMemo}
             changeZIndex={changeZIndex}
             changeSize={changeSize}
+            onMouseMove={onMouseMove}
           ></Memo>
         ))}
       </div>

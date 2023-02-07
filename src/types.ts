@@ -16,3 +16,9 @@ export interface Ttodo {
   width: number;
   height: number;
 }
+
+export interface TmovingObj {
+  id: number;
+  offsetX: number;
+  offsetY: number;
+}
