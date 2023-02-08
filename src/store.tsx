@@ -43,6 +43,10 @@ export class todoStore implements TtodoStore {
     if (todoItem123) todoItem123.msg = msg;
   }
 
+  deleteMemo(id: number) {
+    this.todo = this.todo.filter((item) => item.date !== id);
+  }
+
   changePosition(id: number, xPos: number, yPos: number) {
     const index = this.todo.findIndex((item) => item.date === id);
     this.todo[index].x = xPos;

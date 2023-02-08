@@ -85,6 +85,8 @@ const Memo = ({
   item,
   setmovingObj,
   editMemo,
+  deleteMemo,
+  addMemo,
   changeZIndex,
   changeSize,
   onMouseMove,
@@ -93,6 +95,8 @@ const Memo = ({
   index: number;
   setmovingObj: React.Dispatch<React.SetStateAction<TmovingObj | null>>;
   editMemo: (id: number, msg: string) => void;
+  deleteMemo: (id: number) => void;
+  addMemo: () => void;
   changeZIndex: (id: number) => void;
   changeSize: (
     id: number,
@@ -154,11 +158,11 @@ const Memo = ({
         onMouseMove={onMouseMove}
       >
         <Header_left>
-          <Header_Btn onClick={onClickBtn}>+</Header_Btn>
+          <Header_Btn onClick={() => addMemo()}>+</Header_Btn>
         </Header_left>
         <Header_right>
           <Header_Btn onClick={onClickBtn}>-</Header_Btn>
-          <Header_Btn onClick={onClickBtn}>X</Header_Btn>
+          <Header_Btn onClick={() => deleteMemo(item.date)}>X</Header_Btn>
         </Header_right>
       </Memo_Header>
       <Memo_Text value={memoInput} onChange={onChangeMemo}></Memo_Text>

@@ -57,43 +57,45 @@ const App = ({ store }: { store: TtodoStore }) => {
     [store]
   );
 
-  const removeMemo = useCallback(() => {}, []);
+  const deleteMemo = useCallback((id: number) => {
+    store.deleteMemo(id);
+  }, []);
 
   return (
-    <div>
-      <div
-        style={{
-          position: "relative",
-          border: "1px solid black",
-          width: "100%",
-          height: "200vh",
+    <div
+      style={{
+        position: "relative",
+        border: "1px solid black",
+        width: "100%",
+        height: "200vh",
+      }}
+    >
+      <button onClick={addMemo}>addMemo {movingObj?.id} </button>
+      <button
+        onClick={() => {
+          console.log(
+            store.todo.map((item) => {
+              return toJS(item);
+            })
+          );
         }}
       >
-        <button onClick={addMemo}>addMemo {movingObj?.id} </button>
-        <button
-          onClick={() => {
-            console.log(
-              store.todo.map((item) => {
-                return toJS(item);
-              })
-            );
-          }}
-        >
-          console todo List
-        </button>
-        {store.todo.map((todo, index) => (
-          <Memo
-            key={index}
-            item={todo}
-            index={index}
-            setmovingObj={setmovingObj}
-            editMemo={editMemo}
-            changeZIndex={changeZIndex}
-            changeSize={changeSize}
-            onMouseMove={onMouseMove}
-          ></Memo>
-        ))}
-      </div>
+        console todo List
+      </button>
+      {store.todo.map((todo, index) => (
+        <Memo
+          key={index}
+          item={todo}
+          index={index}
+          setmovingObj={setmovingObj}
+          editMemo={editMemo}
+          deleteMemo={deleteMemo}
+          addMemo={addMemo}
+          changeZIndex={changeZIndex}
+          changeSize={changeSize}
+          onMouseMove={onMouseMove}
+        ></Memo>
+      ))}
     </div>
   );
 };
