@@ -101,7 +101,6 @@ const Memo = ({
   changeZIndex,
   changeSize,
   onMouseMove,
-  ref: ref123,
 }: {
   item: Ttodo;
   index: number;
@@ -116,7 +115,6 @@ const Memo = ({
     height: number | undefined
   ) => void;
   onMouseMove: (e: React.MouseEvent) => void;
-  ref: MutableRefObject<null>;
 }) => {
   const [memoInput, setmemoInput] = useState<string>(item.msg);
   const [isFocus, setisFocus] = useState<boolean>(false);
