@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useRef } from "react";
 import { TmovingObj, TtodoStore } from "./types";
 import { toJS } from "mobx";
 import { observer } from "mobx-react";
@@ -7,6 +7,7 @@ import Memo from "./Memo";
 const App = ({ store }: { store: TtodoStore }) => {
   const [movingObj, setmovingObj] = useState<TmovingObj | null>(null);
 
+  const ref = useRef(null);
   const addMemo = useCallback(() => {
     store.addMemo();
   }, [store]);
@@ -84,6 +85,7 @@ const App = ({ store }: { store: TtodoStore }) => {
       </button>
       {store.todo.map((todo, index) => (
         <Memo
+          ref={ref}
           key={index}
           item={todo}
           index={index}

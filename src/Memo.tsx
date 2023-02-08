@@ -4,6 +4,7 @@ import { observer } from "mobx-react";
 import { useResizeDetector } from "react-resize-detector";
 import styled from "styled-components";
 import { palette } from "./palette";
+import { MutableRefObject } from "react";
 
 const MemoContainer = styled.div<{
   width: number;
@@ -25,41 +26,46 @@ const MemoContainer = styled.div<{
   z-index: ${(props) => props.zIndex};
   resize: both;
   overflow: auto;
-  padding: 3rem 1rem 3rem;
+  padding: 3rem 1rem 1rem;
   border-radius: 5px;
   overflow: hidden;
 `;
 
-const Memo_Header = styled.div`
+const Memo_Header = styled.div<{ isFocus: boolean }>`
   width: 100%;
   height: 2rem;
   background-color: ${palette.grey};
   position: absolute;
-  top: 0;
-  left: 0;
+  top: ${(props) => (props.isFocus ? "0rem" : "-2rem")};
+  left: 0rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 5;
+  transition: top 0.2s ease-in-out;
 `;
 
 const Memo_Text = styled.textarea`
   all: unset;
   resize: none;
   width: 100%;
-  overflow-x: none;
+  overflow: hidden;
   height: 100%;
   font-size: 0.8rem;
   line-height: 1rem;
 `;
 
-const Memo_Footer = styled.div`
+const Memo_Footer = styled.div<{ isFocus: boolean }>`
   width: 100%;
   height: 2rem;
   border-top: 1px solid ${palette.grey};
   position: absolute;
   bottom: 0;
   left: 0;
+  padding: 0.3rem;
+  display: ${(props) => (props.isFocus ? "flex" : "none")};
+  z-index: 20;
+  background-color: white;
 `;
 
 const Header_left = styled.div`
@@ -70,7 +76,7 @@ const Header_right = styled.div`
   height: 100%;
 `;
 
-const Header_Btn = styled.button`
+const Btn = styled.button`
   all: unset;
   width: 2rem;
   height: 100%;
@@ -79,7 +85,12 @@ const Header_Btn = styled.button`
   align-items: center;
   cursor: pointer;
   z-index: 10;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
 `;
+
+const Header_Button = styled(Btn)``;
 
 const Memo = ({
   item,
@@ -90,6 +101,7 @@ const Memo = ({
   changeZIndex,
   changeSize,
   onMouseMove,
+  ref: ref123,
 }: {
   item: Ttodo;
   index: number;
@@ -104,8 +116,10 @@ const Memo = ({
     height: number | undefined
   ) => void;
   onMouseMove: (e: React.MouseEvent) => void;
+  ref: MutableRefObject<null>;
 }) => {
   const [memoInput, setmemoInput] = useState<string>(item.msg);
+  const [isFocus, setisFocus] = useState<boolean>(false);
 
   // 인풋 바뀔때 store에 있는 msg업데이트.
   useEffect(() => {
@@ -149,24 +163,38 @@ const Memo = ({
       left={item.x}
       zIndex={item.zIndex}
       ref={ref}
-      onClick={() => changeZIndex(item.date)}
+      onClick={() => {
+        setisFocus(true);
+        changeZIndex(item.date);
+      }}
       onMouseUp={onMouseUp}
+      onBlur={() => {
+        setisFocus(false);
+      }}
     >
       <Memo_Header
+        isFocus={isFocus}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
         onMouseMove={onMouseMove}
       >
         <Header_left>
-          <Header_Btn onClick={() => addMemo()}>+</Header_Btn>
+          <Header_Button onClick={() => addMemo()}>+</Header_Button>
         </Header_left>
         <Header_right>
-          <Header_Btn onClick={onClickBtn}>-</Header_Btn>
-          <Header_Btn onClick={() => deleteMemo(item.date)}>X</Header_Btn>
+          <Header_Button onClick={onClickBtn}>-</Header_Button>
+          <Header_Button onClick={() => deleteMemo(item.date)}>X</Header_Button>
         </Header_right>
       </Memo_Header>
       <Memo_Text value={memoInput} onChange={onChangeMemo}></Memo_Text>
-      <Memo_Footer></Memo_Footer>
+      <Memo_Footer isFocus={isFocus}>
+        <Btn>+</Btn>
+        <Btn>+</Btn>
+        <Btn>+</Btn>
+        <Btn>+</Btn>
+        <Btn>+</Btn>
+        <Btn>+</Btn>
+      </Memo_Footer>
     </MemoContainer>
   );
 };
