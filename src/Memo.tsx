@@ -132,9 +132,7 @@ const Memo = ({
 
   // header에 클릭했을때 movingObj가 등록된다.
   const onMouseDown = (e: React.MouseEvent) => {
-    e.preventDefault();
     e.stopPropagation();
-    console.log("set Ids");
     setmovingObj({
       id: item.date,
       offsetX: e.nativeEvent.offsetX,
@@ -164,10 +162,12 @@ const Memo = ({
       onClick={() => {
         setisFocus(true);
         changeZIndex(item.date);
+        console.log("focus in");
       }}
       onMouseUp={onMouseUp}
       onBlur={() => {
         setisFocus(false);
+        console.log("focus out");
       }}
     >
       <Memo_Header
