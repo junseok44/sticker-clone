@@ -101,9 +101,12 @@ const Memo = ({
   changeZIndex,
   changeSize,
   onMouseMove,
+  currentMemoId,
+  setcurrentMemoId,
 }: {
+  currentMemoId: number | null;
+  setcurrentMemoId: React.Dispatch<React.SetStateAction<number | null>>;
   item: Ttodo;
-  index: number;
   setmovingObj: React.Dispatch<React.SetStateAction<TmovingObj | null>>;
   editMemo: (id: number, msg: string) => void;
   deleteMemo: (id: number) => void;
@@ -159,19 +162,14 @@ const Memo = ({
       left={item.x}
       zIndex={item.zIndex}
       ref={ref}
-      onClick={() => {
-        setisFocus(true);
-        changeZIndex(item.date);
-        console.log("focus in");
+      onClick={(e) => {
+        e.stopPropagation();
+        setcurrentMemoId(item.date);
       }}
       onMouseUp={onMouseUp}
-      onBlur={() => {
-        setisFocus(false);
-        console.log("focus out");
-      }}
     >
       <Memo_Header
-        isFocus={isFocus}
+        isFocus={currentMemoId === item.date}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
         onMouseMove={onMouseMove}
@@ -181,11 +179,18 @@ const Memo = ({
         </Header_left>
         <Header_right>
           <Header_Button onClick={onClickBtn}>-</Header_Button>
-          <Header_Button onClick={() => deleteMemo(item.date)}>X</Header_Button>
+          <Header_Button
+            onClick={(e) => {
+              e.stopPropagation();
+              deleteMemo(item.date);
+            }}
+          >
+            X
+          </Header_Button>
         </Header_right>
       </Memo_Header>
       <Memo_Text value={memoInput} onChange={onChangeMemo}></Memo_Text>
-      <Memo_Footer isFocus={isFocus}>
+      <Memo_Footer isFocus={currentMemoId === item.date}>
         <Btn>+</Btn>
         <Btn>+</Btn>
         <Btn>+</Btn>

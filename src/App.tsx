@@ -6,6 +6,7 @@ import Memo from "./Memo";
 
 const App = ({ store }: { store: TtodoStore }) => {
   const [movingObj, setmovingObj] = useState<TmovingObj | null>(null);
+  const [currentMemoId, setcurrentMemoId] = useState<number | null>(null);
 
   const addMemo = useCallback(() => {
     store.addMemo();
@@ -69,8 +70,13 @@ const App = ({ store }: { store: TtodoStore }) => {
         width: "100%",
         height: "200vh",
       }}
+      onClick={(e) => {
+        setcurrentMemoId(null);
+      }}
     >
-      <button onClick={addMemo}>addMemo {movingObj?.id} </button>
+      <button onClick={addMemo}>
+        addMemo {movingObj?.id} {currentMemoId}
+      </button>
       <button
         onClick={() => {
           console.log(
@@ -84,9 +90,10 @@ const App = ({ store }: { store: TtodoStore }) => {
       </button>
       {store.todo.map((todo, index) => (
         <Memo
+          currentMemoId={currentMemoId}
+          setcurrentMemoId={setcurrentMemoId}
           key={index}
           item={todo}
-          index={index}
           setmovingObj={setmovingObj}
           editMemo={editMemo}
           deleteMemo={deleteMemo}
