@@ -172,7 +172,6 @@ const Memo = ({
         isFocus={currentMemoId === item.date}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
-        // onMouseMove={onMouseMove}
       >
         <Header_left>
           <Header_Button onClick={() => addMemo()}>+</Header_Button>
