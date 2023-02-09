@@ -72,7 +72,7 @@ const App = ({ store }: { store: TtodoStore }) => {
 
   return (
     <div style={{ display: "flex" }}>
-      <Outlet></Outlet>
+      <Outlet context={store}></Outlet>
       {/* <MemoHome></MemoHome> */}
       <div
         style={{
