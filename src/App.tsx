@@ -36,6 +36,7 @@ const App = ({ store }: { store: TtodoStore }) => {
   const onMouseMove = useCallback(
     (e: React.MouseEvent) => {
       if (movingObj !== null) {
+        console.log("moving");
         e.stopPropagation();
         changePos(
           movingObj.id,
@@ -70,8 +71,12 @@ const App = ({ store }: { store: TtodoStore }) => {
         width: "100%",
         height: "200vh",
       }}
-      onClick={(e) => {
+      onClick={() => {
+        // 모든 focus 해제하기.
         setcurrentMemoId(null);
+      }}
+      onMouseMove={(e: React.MouseEvent) => {
+        onMouseMove(e);
       }}
     >
       <button onClick={addMemo}>
