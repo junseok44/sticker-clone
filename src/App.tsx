@@ -44,7 +44,7 @@ const App = ({ store }: { store: TtodoStore }) => {
 
         changePos(
           movingObj.id,
-          e.nativeEvent.pageX - 250 - movingObj.offsetX,
+          e.nativeEvent.pageX - 290 - movingObj.offsetX,
           e.nativeEvent.pageY - movingObj.offsetY
         );
 

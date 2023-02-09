@@ -165,6 +165,7 @@ const Memo = ({
       onClick={(e) => {
         e.stopPropagation();
         setcurrentMemoId(item.date);
+        changeZIndex(item.date);
       }}
       onMouseUp={onMouseUp}
     >
