@@ -3,11 +3,10 @@ import { useParams, Link, useOutletContext } from "react-router-dom";
 
 const MemoDetailPage = () => {
   const params = useParams();
-
-  const store1 = useOutletContext();
+  const store = useOutletContext();
 
   useEffect(() => {
-    console.log(store1);
+    console.log(store);
   }, []);
 
   return (

@@ -1,7 +1,15 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useCallback } from "react";
+import { Link, useOutletContext } from "react-router-dom";
+import { TtodoStore } from "../lib/types";
 
 const MemoHome = () => {
+  const store = useOutletContext<TtodoStore>();
+
+  const addMemo = useCallback(() => {
+    store.addMemo("general");
+  }, [store]);
+
+  const addTags = useCallback(() => {}, []);
   return (
     <div
       style={{
@@ -17,7 +25,7 @@ const MemoHome = () => {
       <div style={{ display: "flex" }}>
         <h1>메모</h1>
 
-        <button>메모 추가</button>
+        <button onClick={addMemo}>메모 추가</button>
         <button>태그 추가</button>
       </div>
 
@@ -31,10 +39,10 @@ const MemoHome = () => {
           gridAutoRows: "2rem",
         }}
       >
-        <Link to="프로그래밍">프로그래밍</Link>
-        <Link to="게임스터디">게임스터디</Link>
-        <Link to="생각">생각</Link>
-        <Link to="할일들">할일들</Link>
+        <Link to="category/프로그래밍">프로그래밍</Link>
+        <Link to="category/게임스터디">게임스터디</Link>
+        <Link to="category/생각">생각</Link>
+        <Link to="category/할일들">할일들</Link>
       </div>
       <div style={{ width: "100%", border: "1px solid black", height: "100%" }}>
         최근 메모

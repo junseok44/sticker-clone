@@ -1,4 +1,4 @@
-import { Ttodo, TtodoStore } from "./types";
+import { Ttodo, TtodoStore } from "./lib/types";
 import { observable, action, computed, makeAutoObservable } from "mobx";
 
 export class todoItem implements Ttodo {
@@ -9,15 +9,20 @@ export class todoItem implements Ttodo {
   zIndex = 0;
   width = 200;
   height = 200;
+  category = "";
 
-  constructor(zIndex: number) {
+  constructor(zIndex: number, category: string) {
     this.zIndex = zIndex;
+    this.category = category;
     makeAutoObservable(this, {
       msg: observable,
       date: observable,
       x: observable,
       y: observable,
       zIndex: observable,
+      width: observable,
+      height: observable,
+      category: observable,
     });
   }
 }
@@ -33,8 +38,8 @@ export class todoStore implements TtodoStore {
     });
   }
 
-  addMemo() {
-    this.todo.push(new todoItem(this.todo.length));
+  addMemo(category: string) {
+    this.todo.push(new todoItem(this.todo.length, category));
     // 이때 length값은 0이므로. zIndex값은 0부터 생성도니다.
   }
 

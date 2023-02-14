@@ -1,6 +1,6 @@
 export interface TtodoStore {
   todo: Ttodo[];
-  addMemo: () => void;
+  addMemo: (category: string) => void;
   editMemo: (id: number, msg: string) => void;
   deleteMemo: (id: number) => void;
   changePosition: (id: number, xPos: number, yPos: number) => void;
@@ -16,6 +16,7 @@ export interface Ttodo {
   zIndex: number;
   width: number;
   height: number;
+  category: string;
 }
 
 export interface TmovingObj {

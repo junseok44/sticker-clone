@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { TmovingObj, Ttodo } from "./types";
+import { TmovingObj, Ttodo } from "../lib/types";
 import { observer } from "mobx-react";
 import { useResizeDetector } from "react-resize-detector";
 import styled from "styled-components";
-import { palette } from "./palette";
+import { palette } from "../lib/palette";
 import { MutableRefObject } from "react";
 
 const MemoContainer = styled.div<{

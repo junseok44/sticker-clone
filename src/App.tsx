@@ -1,11 +1,11 @@
 import React, { useCallback, useState, useRef } from "react";
-import { TmovingObj, TtodoStore } from "./types";
+import { TmovingObj, TtodoStore } from "./lib/types";
 import { toJS } from "mobx";
 import { observer } from "mobx-react";
-import Memo from "./Memo";
-import MemoHome from "./MemoHome";
+import Memo from "./Components/Memo";
+import MemoHome from "./page/MemoHome";
 import { Outlet } from "react-router-dom";
-import MemoContainer from "./MemoContainer";
+import MemoContainer from "./Components/MemoContainer";
 
 const App = ({ store }: { store: TtodoStore }) => {
   return (

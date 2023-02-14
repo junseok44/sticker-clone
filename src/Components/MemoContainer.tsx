@@ -1,7 +1,7 @@
 import { toJS } from "mobx";
 import React, { useState, useCallback } from "react";
 import Memo from "./Memo";
-import { TmovingObj, TtodoStore } from "./types";
+import { TmovingObj, TtodoStore } from "../lib/types";
 import { observer } from "mobx-react";
 
 const MemoContainer = ({ store }: { store: TtodoStore }) => {
@@ -9,7 +9,7 @@ const MemoContainer = ({ store }: { store: TtodoStore }) => {
   const [currentMemoId, setcurrentMemoId] = useState<number | null>(null);
 
   const addMemo = useCallback(() => {
-    store.addMemo();
+    store.addMemo("hello this is");
   }, [store]);
 
   const changePos = useCallback(
