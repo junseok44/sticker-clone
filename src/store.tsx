@@ -1,4 +1,4 @@
-import { Ttodo, TtodoStore } from "./lib/types";
+import { Tcategory, Ttodo, TtodoStore } from "./lib/types";
 import { observable, action, computed, makeAutoObservable } from "mobx";
 
 export class todoItem implements Ttodo {
@@ -10,6 +10,7 @@ export class todoItem implements Ttodo {
   width = 200;
   height = 200;
   category = "";
+  bgColor = "white";
 
   constructor(zIndex: number, category: string) {
     this.zIndex = zIndex;
@@ -23,13 +24,14 @@ export class todoItem implements Ttodo {
       width: observable,
       height: observable,
       category: observable,
+      bgColor: observable,
     });
   }
 }
 
 export class todoStore implements TtodoStore {
   todo: Ttodo[] = [];
-  category: string[] = [];
+  category: Tcategory[] = [];
 
   constructor() {
     makeAutoObservable(this, {
@@ -83,11 +85,11 @@ export class todoStore implements TtodoStore {
     );
   }
 
-  addCategory(category: string) {
-    this.category.push(category);
+  addCategory(catName: string, bgColor: string) {
+    this.category.push({ name: catName, bgColor });
   }
 
-  deleteCategory(category: string) {
-    this.category = this.category.filter((cat) => cat !== category);
+  deleteCategory(catName: string) {
+    this.category = this.category.filter((cat) => cat.name !== catName);
   }
 }

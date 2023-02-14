@@ -11,7 +11,7 @@ const MemoContainer = ({ store }: { store: TtodoStore }) => {
 
   const params = useParams();
   const addMemo = useCallback(() => {
-    store.addMemo(params.category ? params.category : "general");
+    store.addMemo(params.category ? params.category : "");
   }, [store, params]);
 
   const changePos = useCallback(

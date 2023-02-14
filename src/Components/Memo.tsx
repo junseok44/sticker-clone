@@ -189,7 +189,7 @@ const Memo = ({
           </Header_Button>
         </Header_right>
       </Memo_Header>
-      <div>#{item.category}</div>
+      <div>{item.category ? "#" + item.category : null} </div>
       <Memo_Text value={memoInput} onChange={onChangeMemo}></Memo_Text>
       <Memo_Footer isFocus={currentMemoId === item.date}>
         <Btn>+</Btn>

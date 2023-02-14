@@ -9,7 +9,7 @@ const MemoList = ({ todoList }: { todoList: Ttodo[] }) => {
       {todoList.map((item) => (
         <div>
           {item.msg}
-          <div>#{item.category}</div>
+          <div>{item.category ? "#" + item.category : null}</div>
           <div>{new Date(item.date).toUTCString()}</div>
           <hr></hr>
         </div>
