@@ -29,12 +29,14 @@ export class todoItem implements Ttodo {
 
 export class todoStore implements TtodoStore {
   todo: Ttodo[] = [];
+  category: string[] = [];
 
   constructor() {
     makeAutoObservable(this, {
       todo: observable,
       addMemo: action,
       editMemo: action,
+      addCategory: action,
     });
   }
 
@@ -79,5 +81,13 @@ export class todoStore implements TtodoStore {
     this.todo = this.todo.map((item) =>
       item.date === id ? { ...item, width: width, height: height } : item
     );
+  }
+
+  addCategory(category: string) {
+    this.category.push(category);
+  }
+
+  deleteCategory(category: string) {
+    this.category = this.category.filter((cat) => cat !== category);
   }
 }

@@ -10,8 +10,8 @@ import {
   Link,
 } from "react-router-dom";
 import { createRoutesFromElements } from "react-router";
-import MemoHome from "./page/MemoHome";
-import MemoDetailPage from "./page/MemoDetailPage";
+import MemoHome from "./page/MemoHomeListPage";
+import MemoDetailPage from "./page/MemoDetailListPage";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -19,13 +19,16 @@ const root = ReactDOM.createRoot(
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App store={new todoStore()} />}>
-      <Route path="/" element={<MemoHome></MemoHome>}></Route>
-      <Route
-        path="category/:category"
-        element={<MemoDetailPage></MemoDetailPage>}
-      ></Route>
-    </Route>
+    <>
+      <Route path="/" element={<App store={new todoStore()} />}>
+        <Route path="/" element={<MemoHome></MemoHome>}></Route>
+        <Route
+          path="category/:category"
+          element={<MemoDetailPage></MemoDetailPage>}
+        ></Route>
+      </Route>
+      <Route path="*" element={<div>error!!</div>}></Route>
+    </>
   )
 );
 

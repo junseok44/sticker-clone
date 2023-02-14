@@ -3,14 +3,16 @@ import React, { useState, useCallback } from "react";
 import Memo from "./Memo";
 import { TmovingObj, TtodoStore } from "../lib/types";
 import { observer } from "mobx-react";
+import { useParams } from "react-router-dom";
 
 const MemoContainer = ({ store }: { store: TtodoStore }) => {
   const [movingObj, setmovingObj] = useState<TmovingObj | null>(null);
   const [currentMemoId, setcurrentMemoId] = useState<number | null>(null);
 
+  const params = useParams();
   const addMemo = useCallback(() => {
-    store.addMemo("hello this is");
-  }, [store]);
+    store.addMemo(params.category ? params.category : "general");
+  }, [store, params]);
 
   const changePos = useCallback(
     (id: number, xPos: number, yPos: number) => {
