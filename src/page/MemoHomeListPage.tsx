@@ -47,19 +47,22 @@ const MemoHome = () => {
         ></input>
       </form>
       <input placeholder="메모 검색.."></input>
-      <div
-        style={{
-          width: "100%",
-          minHeight: "3rem",
-          border: "1px solid black",
-          display: "grid",
-          gridTemplateColumns: "repeat(2, 2fr)",
-          gridAutoRows: "2rem",
-        }}
-      >
-        {store.category.map((cat) => (
-          <Link to={`category/${cat}`}>#{cat}</Link>
-        ))}
+      <div>
+        카테고리
+        <div
+          style={{
+            width: "100%",
+            minHeight: "3rem",
+            border: "1px solid black",
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 2fr)",
+            gridAutoRows: "2rem",
+          }}
+        >
+          {store.category.map((cat) => (
+            <Link to={`category/${cat}`}>#{cat}</Link>
+          ))}
+        </div>
       </div>
       <MemoList todoList={store.todo}></MemoList>
     </div>

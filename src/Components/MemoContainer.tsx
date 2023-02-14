@@ -99,11 +99,11 @@ const MemoContainer = ({ store }: { store: TtodoStore }) => {
       >
         console todo List
       </button>
-      {store.todo.map((todo, index) => (
+      {store.todo.map((todo) => (
         <Memo
           currentMemoId={currentMemoId}
           setcurrentMemoId={setcurrentMemoId}
-          key={index}
+          key={todo.date}
           item={todo}
           setmovingObj={setmovingObj}
           editMemo={editMemo}
