@@ -5,6 +5,7 @@ import { useResizeDetector } from "react-resize-detector";
 import styled from "styled-components";
 import { palette } from "../lib/palette";
 import { MutableRefObject } from "react";
+import MemoCatModal from "./MemoCatModal";
 
 const MemoContainer = styled.div<{
   width: number;
@@ -29,12 +30,13 @@ const MemoContainer = styled.div<{
   padding: 3rem 1rem 1rem;
   border-radius: 5px;
   overflow: hidden;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 `;
 
-const Memo_Header = styled.div<{ isFocus: boolean }>`
+const Memo_Header = styled.div<{ isFocus: boolean; bgColor: string }>`
   width: 100%;
   height: 2rem;
-  background-color: ${palette.grey};
+  background-color: ${(props) => props.bgColor};
   position: absolute;
   top: ${(props) => (props.isFocus ? "0rem" : "-2rem")};
   left: 0rem;
@@ -100,7 +102,6 @@ const Memo = ({
   addMemo,
   changeZIndex,
   changeSize,
-  onMouseMove,
   currentMemoId,
   setcurrentMemoId,
 }: {
@@ -120,7 +121,7 @@ const Memo = ({
   onMouseMove: (e: React.MouseEvent) => void;
 }) => {
   const [memoInput, setmemoInput] = useState<string>(item.msg);
-  const [isFocus, setisFocus] = useState<boolean>(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
   // 인풋 바뀔때 store에 있는 msg업데이트.
   useEffect(() => {
@@ -150,8 +151,8 @@ const Memo = ({
     setmemoInput(e.target.value);
   };
 
-  const onClickBtn = () => {
-    console.log("clicked");
+  const onOpenModal = () => {
+    setIsCategoryModalOpen(!isCategoryModalOpen);
   };
 
   return (
@@ -168,8 +169,10 @@ const Memo = ({
         changeZIndex(item.date);
       }}
       onMouseUp={onMouseUp}
+      onMouseOut={onMouseUp}
     >
       <Memo_Header
+        bgColor={item.bgColor}
         isFocus={currentMemoId === item.date}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
@@ -177,8 +180,9 @@ const Memo = ({
         <Header_left>
           <Header_Button onClick={() => addMemo()}>+</Header_Button>
         </Header_left>
+
         <Header_right>
-          <Header_Button onClick={onClickBtn}>-</Header_Button>
+          <Header_Button onClick={onOpenModal}>-</Header_Button>
           <Header_Button
             onClick={(e) => {
               e.stopPropagation();
@@ -189,8 +193,26 @@ const Memo = ({
           </Header_Button>
         </Header_right>
       </Memo_Header>
-      <div>{item.category ? "#" + item.category : null} </div>
+
+      <div style={{ position: "relative" }} onClick={onOpenModal}>
+        <div
+          style={{
+            color: item.bgColor,
+            cursor: "pointer",
+            position: "relative",
+          }}
+        >
+          {item.category ? "#" + item.category : null}
+        </div>
+        {isCategoryModalOpen && (
+          <MemoCatModal
+            id={item.date}
+            setModal={setIsCategoryModalOpen}
+          ></MemoCatModal>
+        )}
+      </div>
       <Memo_Text value={memoInput} onChange={onChangeMemo}></Memo_Text>
+
       <Memo_Footer isFocus={currentMemoId === item.date}>
         <Btn>+</Btn>
         <Btn>+</Btn>

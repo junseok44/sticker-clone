@@ -1,6 +1,6 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { useParams, Link, useOutletContext } from "react-router-dom";
-import { TtodoStore } from "../lib/types";
+import { Tcategory, TtodoStore } from "../lib/types";
 import { observer } from "mobx-react";
 import MemoList from "../Components/MemoList";
 
@@ -8,15 +8,22 @@ const MemoDetailPage = () => {
   const params = useParams();
   const { store, addMemo } = useOutletContext<{
     store: TtodoStore;
-    addMemo: (category: string) => void;
+    addMemo: (category: string, bgColor?: string) => void;
   }>();
+  const [category, setCategory] = useState<Tcategory | null>();
+
+  useEffect(() => {
+    const currentCat = store.category.find(
+      (cat) => cat.name === params.category
+    );
+    if (currentCat) setCategory(currentCat);
+  }, []);
 
   const onDeleteCategory = useCallback(() => {
-    if (params.category) store.deleteCategory(params.category);
+    if (category) store.deleteCategory(category.name);
   }, [params, store]);
 
   return (
-    // param.category가 없을때의 예외처리.
     <div
       style={{
         width: "25%",
@@ -28,30 +35,50 @@ const MemoDetailPage = () => {
         gap: "10px",
       }}
     >
-      <div>
-        {params.category ? "#" + params.category : "loading..."}
+      {category ? (
+        <>
+          <div>
+            <div style={{ display: "flex" }}>
+              {"#" + category.name}
+              <div
+                style={{
+                  width: "1.3rem",
+                  height: "1.3rem",
+                  borderRadius: "50%",
+                  backgroundColor: category.bgColor,
+                  marginRight: "0.3rem",
+                }}
+              ></div>
+            </div>
+            <div>
+              <button onClick={() => addMemo(category.name, category.bgColor)}>
+                메모 작성
+              </button>
+              <button onClick={onDeleteCategory}>
+                <Link style={{ color: "red" }} to={"/"}>
+                  카테고리 삭제
+                </Link>
+              </button>
+              <button>
+                <Link to={"/"}>돌아가기</Link>
+              </button>
+            </div>
+          </div>
+          <input placeholder={`${category.name}에서 찾아보기..`}></input>
+          <MemoList
+            todoList={store.todo.filter(
+              (todo) => todo.category == category.name
+            )}
+          ></MemoList>
+        </>
+      ) : (
         <div>
-          <button
-            onClick={() =>
-              addMemo(params.category ? params.category : "general")
-            }
-          >
-            메모 작성
-          </button>
-          <button onClick={onDeleteCategory}>
-            <Link style={{ color: "red" }} to={"/"}>
-              카테고리 삭제
-            </Link>
-          </button>
+          no category{" "}
           <button>
             <Link to={"/"}>돌아가기</Link>
           </button>
         </div>
-      </div>
-      <input placeholder={`${params.category}에서 찾아보기..`}></input>
-      <MemoList
-        todoList={store.todo.filter((todo) => todo.category == params.category)}
-      ></MemoList>
+      )}
     </div>
   );
 };

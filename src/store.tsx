@@ -1,5 +1,6 @@
 import { Tcategory, Ttodo, TtodoStore } from "./lib/types";
 import { observable, action, computed, makeAutoObservable } from "mobx";
+import { palette } from "./lib/palette";
 
 export class todoItem implements Ttodo {
   msg = "";
@@ -10,11 +11,12 @@ export class todoItem implements Ttodo {
   width = 200;
   height = 200;
   category = "";
-  bgColor = "white";
+  bgColor = palette.grey;
 
-  constructor(zIndex: number, category: string) {
+  constructor(zIndex: number, category: string, bgColor?: string) {
     this.zIndex = zIndex;
     this.category = category;
+    if (bgColor) this.bgColor = bgColor;
     makeAutoObservable(this, {
       msg: observable,
       date: observable,
@@ -25,7 +27,13 @@ export class todoItem implements Ttodo {
       height: observable,
       category: observable,
       bgColor: observable,
+      changeCategory: action,
     });
+  }
+
+  changeCategory(category: string, bgColor: string) {
+    this.category = category;
+    this.bgColor = bgColor;
   }
 }
 
@@ -42,8 +50,8 @@ export class todoStore implements TtodoStore {
     });
   }
 
-  addMemo(category: string) {
-    this.todo.push(new todoItem(this.todo.length, category));
+  addMemo(category: string, bgColor?: string) {
+    this.todo.push(new todoItem(this.todo.length, category, bgColor));
     // 이때 length값은 0이므로. zIndex값은 0부터 생성도니다.
   }
 
@@ -91,5 +99,13 @@ export class todoStore implements TtodoStore {
 
   deleteCategory(catName: string) {
     this.category = this.category.filter((cat) => cat.name !== catName);
+  }
+
+  changeCategory(a: number, b: string, c: string) {
+    const target = this.todo.find((item) => item.date == a);
+    if (target) {
+      target.category = b;
+      target.bgColor = c;
+    }
   }
 }

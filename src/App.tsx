@@ -1,16 +1,13 @@
-import React, { useCallback, useState, useRef } from "react";
-import { TmovingObj, TtodoStore } from "./lib/types";
-import { toJS } from "mobx";
+import { useCallback } from "react";
+import { TtodoStore } from "./lib/types";
 import { observer } from "mobx-react";
-import Memo from "./Components/Memo";
-import MemoHome from "./page/MemoHomeListPage";
 import { Outlet } from "react-router-dom";
 import MemoContainer from "./Components/MemoContainer";
 
 const App = ({ store }: { store: TtodoStore }) => {
   const addMemo = useCallback(
-    (category: string) => {
-      store.addMemo(category);
+    (category: string, bgColor?: string) => {
+      store.addMemo(category, bgColor);
     },
     [store]
   );
