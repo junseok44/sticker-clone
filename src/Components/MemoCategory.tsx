@@ -1,12 +1,22 @@
 import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 import { colorArray } from "../lib/palette";
 import { TtodoStore } from "../lib/types";
+
+export const CircleItem = styled.div<{ bgColor: string }>`
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  margin-right: 0.3rem;
+  background-color: ${(props) => props.bgColor};
+`;
 
 const MemoCategory = ({ store }: { store: TtodoStore }) => {
   const [cgInput, setcgInput] = useState<string>("");
   const [selectedCgColor, setselectedCgColor] = useState<string>("");
   const [catgErrMsg, catgSetErrMsg] = useState<string>("");
+
   const addCategory = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
