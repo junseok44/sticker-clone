@@ -110,7 +110,7 @@ const MemoContainer = ({ store }: { store: TtodoStore }) => {
         onMouseMove(e);
       }}
     >
-      {/* <button onClick={addMemo}>
+      <button onClick={addMemo}>
         addMemo {movingObj?.id} {currentMemoId}
       </button>
       <button
@@ -120,10 +120,15 @@ const MemoContainer = ({ store }: { store: TtodoStore }) => {
               return toJS(item);
             })
           );
+          console.log(
+            store.category.map((item) => {
+              return toJS(item);
+            })
+          );
         }}
       >
         console todo List
-      </button> */}
+      </button>
       <StoreContext.Provider value={store}>
         {store.todo.map((todo) => (
           <Memo

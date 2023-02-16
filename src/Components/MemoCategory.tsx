@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useStateWithPromises } from "../lib/hooks";
 import { colorArray } from "../lib/palette";
 import { TtodoStore } from "../lib/types";
 
@@ -13,27 +14,51 @@ export const CircleItem = styled.div<{ bgColor: string }>`
 `;
 
 const MemoCategory = ({ store }: { store: TtodoStore }) => {
-  const [cgInput, setcgInput] = useState<string>("");
-  const [selectedCgColor, setselectedCgColor] = useState<string>("");
-  const [catgErrMsg, catgSetErrMsg] = useState<string>("");
+  const [cgInput, setcgInput] = useStateWithPromises("");
+  const [cgColor, setCgColor] = useStateWithPromises("");
+  const [cgErrMsg, setCgErrMsg] = useState<string>("");
+  const [isAddedCategory, setIsAddedCategory] = useStateWithPromises(false);
+
+  useEffect(() => {
+    if (isAddedCategory) {
+      console.log(cgInput);
+      store.addCategory(cgInput, cgColor);
+      setIsAddedCategory(false);
+    }
+  }, [isAddedCategory]);
 
   const addCategory = useCallback(
-    (e: React.FormEvent) => {
+    async (e: React.FormEvent) => {
       e.preventDefault();
       if (!cgInput) {
-        catgSetErrMsg("카테고리 이름을 입력하세요!!");
-        return;
-      } else if (!selectedCgColor) {
-        catgSetErrMsg("카테고리 색깔을 선택하세요!");
-        return;
-      } else if (store.category.find((cat) => cat.bgColor == selectedCgColor)) {
-        catgSetErrMsg("이미 있는 카테고리 색깔입니다.");
+        setCgErrMsg("카테고리 이름을 입력하세요!!");
         return;
       }
-      store.addCategory(cgInput, selectedCgColor);
-      setcgInput("");
+      if (!cgColor) {
+        let catColorArr = [];
+        for (const cat of store.category) {
+          catColorArr.push(cat.bgColor);
+        }
+        const catColorSet = new Set(catColorArr);
+        const noColorSet = new Set(
+          [...colorArray].filter((color) => !catColorSet.has(color))
+        );
+        const leftArray = Array.from(noColorSet);
+        await setCgColor(
+          leftArray[Math.floor(Math.random() * leftArray.length)]
+        );
+      }
+      console.log(cgInput);
+      await setIsAddedCategory(true);
+      await setcgInput("");
+      await setCgColor("");
+      // store.addCategory(cgInput, selectedCgColor);
+      // setIsAddedCategory(true);
+      // 여기서 바로 store.addCategory하면 안된단다. 왜냐하면
+      // addCategory가 참조하고 있는 store.addCategory는 여전히 낡은것이기 때문이라고.
+      // 그래서 useEffect를 통해서 이 값이 바뀌면
     },
-    [store, cgInput, selectedCgColor, setcgInput]
+    [store, cgInput, cgColor, setcgInput, setCgColor]
   );
   return (
     <>
@@ -41,9 +66,9 @@ const MemoCategory = ({ store }: { store: TtodoStore }) => {
         <input
           placeholder="카테고리 추가.."
           value={cgInput}
-          onChange={(e) => {
-            catgSetErrMsg("");
-            setcgInput(e.target.value);
+          onChange={async (e) => {
+            setCgErrMsg("");
+            await setcgInput(e.target.value);
           }}
         ></input>
         <button>추가</button>
@@ -54,22 +79,22 @@ const MemoCategory = ({ store }: { store: TtodoStore }) => {
                 width: "1.3rem",
                 height: "1.3rem",
                 borderRadius: "50%",
-                border: item == selectedCgColor ? "3px solid black" : "none",
+                border: item == cgColor ? "3px solid black" : "none",
                 backgroundColor: item,
                 marginRight: "0.3rem",
               }}
-              onClick={() => {
-                if (selectedCgColor == item) {
-                  setselectedCgColor("");
+              onClick={async () => {
+                if (cgColor == item) {
+                  await setCgColor("");
                   return;
                 }
-                setselectedCgColor(item);
-                catgSetErrMsg("");
+                await setCgColor(item);
+                setCgErrMsg("");
               }}
             ></div>
           ))}
         </div>
-        {catgErrMsg && <div style={{ color: "red" }}>{catgErrMsg}</div>}
+        {cgErrMsg && <div style={{ color: "red" }}>{cgErrMsg}</div>}
       </form>
       <div>
         카테고리
