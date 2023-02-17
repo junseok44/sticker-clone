@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { TmovingObj, Ttodo } from "../lib/types";
+import { TaddMemo, TmovingObj, Ttodo } from "../lib/types";
 import { observer } from "mobx-react";
 import { useResizeDetector } from "react-resize-detector";
 import styled from "styled-components";
 import { palette } from "../lib/palette";
 import { MutableRefObject } from "react";
 import MemoCatModal from "./MemoCatModal";
+import MemoCategoryBar from "./MemoCategoryBar";
 
 const MemoContainer = styled.div<{
   width: number;
@@ -111,7 +112,7 @@ const Memo = ({
   setmovingObj: React.Dispatch<React.SetStateAction<TmovingObj | null>>;
   editMemo: (id: number, msg: string) => void;
   deleteMemo: (id: number) => void;
-  addMemo: () => void;
+  addMemo: TaddMemo;
   changeZIndex: (id: number) => void;
   changeSize: (
     id: number,
@@ -151,10 +152,6 @@ const Memo = ({
     setmemoInput(e.target.value);
   };
 
-  const onOpenModal = () => {
-    setIsCategoryModalOpen(!isCategoryModalOpen);
-  };
-
   return (
     <MemoContainer
       width={item.width}
@@ -178,11 +175,14 @@ const Memo = ({
         onMouseUp={onMouseUp}
       >
         <Header_left>
-          <Header_Button onClick={() => addMemo()}>+</Header_Button>
+          <Header_Button onClick={() => addMemo("", 20)}>+</Header_Button>
         </Header_left>
-
         <Header_right>
-          <Header_Button onClick={onOpenModal}>-</Header_Button>
+          <Header_Button
+            onClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}
+          >
+            -
+          </Header_Button>
           <Header_Button
             onClick={(e) => {
               e.stopPropagation();
@@ -193,26 +193,12 @@ const Memo = ({
           </Header_Button>
         </Header_right>
       </Memo_Header>
-
-      <div style={{ position: "relative" }} onClick={onOpenModal}>
-        <div
-          style={{
-            color: item.bgColor,
-            cursor: "pointer",
-            position: "relative",
-          }}
-        >
-          {item.category ? "#" + item.category : null}
-        </div>
-        {isCategoryModalOpen && (
-          <MemoCatModal
-            id={item.date}
-            setModal={setIsCategoryModalOpen}
-          ></MemoCatModal>
-        )}
-      </div>
+      <MemoCategoryBar
+        item={item}
+        isCategoryModalOpen={isCategoryModalOpen}
+        setIsCategoryModalOpen={setIsCategoryModalOpen}
+      ></MemoCategoryBar>
       <Memo_Text value={memoInput} onChange={onChangeMemo}></Memo_Text>
-
       <Memo_Footer isFocus={currentMemoId === item.date}>
         <Btn>+</Btn>
         <Btn>+</Btn>

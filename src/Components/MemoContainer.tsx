@@ -8,32 +8,40 @@ import React, {
   createContext,
 } from "react";
 import Memo from "./Memo";
-import { TmovingObj, TtodoStore } from "../lib/types";
+import { TaddMemo, TmovingObj, TtodoStore } from "../lib/types";
 import { observer } from "mobx-react";
 import { useParams } from "react-router-dom";
 import { todoStore } from "../store";
 
 export const StoreContext = createContext<TtodoStore | null>(null);
 
-const MemoContainer = ({ store }: { store: TtodoStore }) => {
+const MemoContainer = ({
+  store,
+  addMemo,
+}: {
+  store: TtodoStore;
+  addMemo: TaddMemo;
+}) => {
   // 지금 움직이고 있는 메모 객체에 대한 정보.
   const [movingObj, setmovingObj] = useState<TmovingObj | null>(null);
   // 애니메이션을 위한 현재 선택 메모
   const [currentMemoId, setcurrentMemoId] = useState<number | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
-
   const params = useParams();
-  const addMemo = useCallback(() => {
+
+  const addMemoWithParams = useCallback(() => {
     if (!params.category) {
-      store.addMemo("");
+      addMemo("", 20);
       return;
     }
     const currentCat = store.category.find(
       (cat) => cat.name == params.category
     );
-    if (currentCat) store.addMemo(currentCat.name, currentCat.bgColor);
-  }, [store, params]);
+    if (currentCat) addMemo(currentCat.name, 20, currentCat.bgColor);
+  }, [params, store, addMemo]);
+  // addMemo에서 dependencies를 안써주면은
+  // 이 함수는 계속 과거의 params.category를 참고하게 된다.
 
   const changePos = useCallback(
     (id: number, xPos: number, yPos: number) => {
@@ -110,7 +118,7 @@ const MemoContainer = ({ store }: { store: TtodoStore }) => {
         onMouseMove(e);
       }}
     >
-      <button onClick={addMemo}>
+      <button onClick={addMemoWithParams}>
         addMemo {movingObj?.id} {currentMemoId}
       </button>
       <button

@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from "react";
 import { useParams, Link, useOutletContext } from "react-router-dom";
-import { Tcategory, TtodoStore } from "../lib/types";
+import { TaddMemo, Tcategory, TtodoStore } from "../lib/types";
 import { observer } from "mobx-react";
 import MemoList from "../Components/MemoList";
 
@@ -8,7 +8,7 @@ const MemoDetailPage = () => {
   const params = useParams();
   const { store, addMemo } = useOutletContext<{
     store: TtodoStore;
-    addMemo: (category: string, bgColor?: string) => void;
+    addMemo: TaddMemo;
   }>();
   const [category, setCategory] = useState<Tcategory | null>();
 
@@ -20,7 +20,10 @@ const MemoDetailPage = () => {
   }, []);
 
   const onDeleteCategory = useCallback(() => {
-    if (category) store.deleteCategory(category.name);
+    if (category) {
+      store.deleteCategory(category.name);
+      store.deleteMemoInCategory(category.name);
+    }
   }, [params, store]);
 
   return (
@@ -51,7 +54,9 @@ const MemoDetailPage = () => {
               ></div>
             </div>
             <div>
-              <button onClick={() => addMemo(category.name, category.bgColor)}>
+              <button
+                onClick={() => addMemo(category.name, 20, category.bgColor)}
+              >
                 메모 작성
               </button>
               <button onClick={onDeleteCategory}>

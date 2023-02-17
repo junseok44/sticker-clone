@@ -13,10 +13,11 @@ export class todoItem implements Ttodo {
   category = "";
   bgColor = palette.grey;
 
-  constructor(zIndex: number, category: string, bgColor?: string) {
+  constructor(zIndex: number, category: string, x: number, bgColor?: string) {
     this.zIndex = zIndex;
     this.category = category;
     if (bgColor) this.bgColor = bgColor;
+    if (x) this.x = x;
     makeAutoObservable(this, {
       msg: observable,
       date: observable,
@@ -50,8 +51,8 @@ export class todoStore implements TtodoStore {
     });
   }
 
-  addMemo(category: string, bgColor?: string) {
-    this.todo.push(new todoItem(this.todo.length, category, bgColor));
+  addMemo(category: string, x: number, bgColor?: string) {
+    this.todo.push(new todoItem(this.todo.length, category, x, bgColor));
     // 이때 length값은 0이므로. zIndex값은 0부터 생성도니다.
   }
 
@@ -62,6 +63,10 @@ export class todoStore implements TtodoStore {
 
   deleteMemo(id: number) {
     this.todo = this.todo.filter((item) => item.date !== id);
+  }
+
+  deleteMemoInCategory(categoryName: string) {
+    this.todo = this.todo.filter((item) => item.category !== categoryName);
   }
 
   changePosition(id: number, xPos: number, yPos: number) {

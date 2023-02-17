@@ -1,9 +1,10 @@
 export interface TtodoStore {
   todo: Ttodo[];
   category: Tcategory[];
-  addMemo: (category: string, bgColor?: string) => void;
+  addMemo: (category: string, x: number, bgColor?: string) => void;
   editMemo: (id: number, msg: string) => void;
   deleteMemo: (id: number) => void;
+  deleteMemoInCategory: (name123: string) => void;
   changePosition: (id: number, xPos: number, yPos: number) => void;
   changeZIndex: (id: number) => void;
   changeSize: (id: number, width: number, height: number) => void;
@@ -35,3 +36,5 @@ export interface Tcategory {
   name: string;
   bgColor: string;
 }
+
+export type TaddMemo = (category: string, x: number, bgColor?: string) => void;
