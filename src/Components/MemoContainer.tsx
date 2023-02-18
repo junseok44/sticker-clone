@@ -12,6 +12,7 @@ import { TaddMemo, TmovingObj, TtodoStore } from "../lib/types";
 import { observer } from "mobx-react";
 import { useParams } from "react-router-dom";
 import { todoStore } from "../store";
+import MemoAdd from "./MemoAdd";
 
 export const StoreContext = createContext<TtodoStore | null>(null);
 
@@ -26,19 +27,19 @@ const MemoContainer = ({
   const [movingObj, setmovingObj] = useState<TmovingObj | null>(null);
   // 애니메이션을 위한 현재 선택 메모
   const [currentMemoId, setcurrentMemoId] = useState<number | null>(null);
-
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isAddModal, setIsAddModal] = useState<boolean>(false);
   const params = useParams();
 
   const addMemoWithParams = useCallback(() => {
     if (!params.category) {
-      addMemo("", 20);
+      addMemo("", 20, 20);
       return;
     }
     const currentCat = store.category.find(
       (cat) => cat.name == params.category
     );
-    if (currentCat) addMemo(currentCat.name, 20, currentCat.bgColor);
+    if (currentCat) addMemo(currentCat.name, 20, 20, currentCat.bgColor);
   }, [params, store, addMemo]);
   // addMemo에서 dependencies를 안써주면은
   // 이 함수는 계속 과거의 params.category를 참고하게 된다.
@@ -118,7 +119,7 @@ const MemoContainer = ({
         onMouseMove(e);
       }}
     >
-      <button onClick={addMemoWithParams}>
+      <button onClick={() => setIsAddModal(!isAddModal)}>
         addMemo {movingObj?.id} {currentMemoId}
       </button>
       <button
@@ -137,6 +138,15 @@ const MemoContainer = ({
       >
         console todo List
       </button>
+      <button onClick={() => store.resetMemoList()}>reset memo</button>
+      {isAddModal && (
+        <MemoAdd
+          category={store.category}
+          addMemo={addMemo}
+          setIsAddModal={setIsAddModal}
+        ></MemoAdd>
+      )}
+
       <StoreContext.Provider value={store}>
         {store.todo.map((todo) => (
           <Memo

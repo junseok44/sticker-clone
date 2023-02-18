@@ -55,9 +55,9 @@ const MemoDetailPage = () => {
             </div>
             <div>
               <button
-                onClick={() => addMemo(category.name, 20, category.bgColor)}
+                onClick={() => addMemo(category.name, 20, 20, category.bgColor)}
               >
-                메모 작성
+                이 태그로 메모작성
               </button>
               <button onClick={onDeleteCategory}>
                 <Link style={{ color: "red" }} to={"/"}>

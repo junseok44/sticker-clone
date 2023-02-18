@@ -1,6 +1,13 @@
 import { Tcategory, Ttodo, TtodoStore } from "./lib/types";
-import { observable, action, computed, makeAutoObservable } from "mobx";
+import {
+  observable,
+  action,
+  computed,
+  makeAutoObservable,
+  autorun,
+} from "mobx";
 import { palette } from "./lib/palette";
+import { v1 as uuidv1 } from "uuid";
 
 export class todoItem implements Ttodo {
   msg = "";
@@ -13,11 +20,18 @@ export class todoItem implements Ttodo {
   category = "";
   bgColor = palette.grey;
 
-  constructor(zIndex: number, category: string, x: number, bgColor?: string) {
+  constructor(
+    zIndex: number,
+    category: string,
+    x: number,
+    y: number,
+    bgColor?: string
+  ) {
     this.zIndex = zIndex;
     this.category = category;
+    this.x = x;
+    this.y = y;
     if (bgColor) this.bgColor = bgColor;
-    if (x) this.x = x;
     makeAutoObservable(this, {
       msg: observable,
       date: observable,
@@ -41,7 +55,7 @@ export class todoItem implements Ttodo {
 export class todoStore implements TtodoStore {
   todo: Ttodo[] = [];
   category: Tcategory[] = [];
-
+  localStorage: Storage | null = null;
   constructor() {
     makeAutoObservable(this, {
       todo: observable,
@@ -49,10 +63,33 @@ export class todoStore implements TtodoStore {
       editMemo: action,
       addCategory: action,
     });
+
+    this.initLocalStorage();
+    autorun(() => {
+      if (this.localStorage !== null) {
+        this.localStorage.setItem("todo", JSON.stringify(this.todo));
+        this.localStorage.setItem("category", JSON.stringify(this.category));
+      }
+    });
   }
 
-  addMemo(category: string, x: number, bgColor?: string) {
-    this.todo.push(new todoItem(this.todo.length, category, x, bgColor));
+  initLocalStorage() {
+    if (!this.localStorage) {
+      this.localStorage = window.localStorage;
+      this.loadLocalStorage();
+    } else {
+      this.loadLocalStorage();
+    }
+  }
+
+  loadLocalStorage() {
+    this.todo = JSON.parse(this.localStorage?.getItem("todo") || "");
+    this.category = JSON.parse(this.localStorage?.getItem("category") || "");
+  }
+
+  addMemo(category: string, x: number, y: number, bgColor?: string) {
+    console.log(this.todo.length);
+    this.todo.push(new todoItem(this.todo.length, category, x, y, bgColor));
     // 이때 length값은 0이므로. zIndex값은 0부터 생성도니다.
   }
 
@@ -63,6 +100,10 @@ export class todoStore implements TtodoStore {
 
   deleteMemo(id: number) {
     this.todo = this.todo.filter((item) => item.date !== id);
+  }
+
+  resetMemoList() {
+    this.todo = [];
   }
 
   deleteMemoInCategory(categoryName: string) {

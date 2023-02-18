@@ -24,7 +24,7 @@ const MemoHome = () => {
     >
       <div style={{ display: "flex" }}>
         <h1>스티커 메모</h1>
-        <button onClick={() => addMemo("", 20)}>메모 추가</button>
+        <button onClick={() => addMemo("", 20, 20)}>메모 추가</button>
       </div>
       <input placeholder="메모 검색.."></input>
       <MemoCategory store={store}></MemoCategory>

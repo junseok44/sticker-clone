@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { TaddMemo, TmovingObj, Ttodo } from "../lib/types";
 import { observer } from "mobx-react";
 import { useResizeDetector } from "react-resize-detector";
@@ -95,17 +95,7 @@ const Btn = styled.button`
 
 const Header_Button = styled(Btn)``;
 
-const Memo = ({
-  item,
-  setmovingObj,
-  editMemo,
-  deleteMemo,
-  addMemo,
-  changeZIndex,
-  changeSize,
-  currentMemoId,
-  setcurrentMemoId,
-}: {
+interface TMemoProps {
   currentMemoId: number | null;
   setcurrentMemoId: React.Dispatch<React.SetStateAction<number | null>>;
   item: Ttodo;
@@ -120,7 +110,19 @@ const Memo = ({
     height: number | undefined
   ) => void;
   onMouseMove: (e: React.MouseEvent) => void;
-}) => {
+}
+
+const Memo = ({
+  item,
+  setmovingObj,
+  editMemo,
+  deleteMemo,
+  addMemo,
+  changeZIndex,
+  changeSize,
+  currentMemoId,
+  setcurrentMemoId,
+}: TMemoProps) => {
   const [memoInput, setmemoInput] = useState<string>(item.msg);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
@@ -152,6 +154,20 @@ const Memo = ({
     setmemoInput(e.target.value);
   };
 
+  const onAddMemo = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (item.category) {
+        addMemo(item.category, item.x + 20, item.y + 20, item.bgColor);
+        // 지금처럼 이렇게 카테고리와 bgColor가 연결이 안되어있는경우에는.
+        // 다 따로되니까. id로 둘을 묶어놓는게 나은것같다.
+      } else {
+        addMemo("", item.x + 20, item.y + 20);
+      }
+    },
+    [item, addMemo]
+  );
+
   return (
     <MemoContainer
       width={item.width}
@@ -175,7 +191,7 @@ const Memo = ({
         onMouseUp={onMouseUp}
       >
         <Header_left>
-          <Header_Button onClick={() => addMemo("", 20)}>+</Header_Button>
+          <Header_Button onClick={onAddMemo}>+</Header_Button>
         </Header_left>
         <Header_right>
           <Header_Button

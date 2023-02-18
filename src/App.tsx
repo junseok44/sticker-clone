@@ -11,27 +11,9 @@ const setFromLocalStorage = (type: "todo" | "category", store: TtodoStore) => {
 };
 
 const App = ({ store }: { store: TtodoStore }) => {
-  useEffect(() => {
-    setFromLocalStorage("todo", store);
-    setFromLocalStorage("category", store);
-  }, []);
-
-  // useDeepCompareEffect(() => {
-  //   console.log("setting itmes");
-  //   localStorage.setItem("todo", JSON.stringify(store.todo));
-  //   localStorage.setItem("category", JSON.stringify(store.category));
-  // }, [store.category, store.todo]);
-
-  useEffect(() => {
-    console.log("setting itmes");
-
-    localStorage.setItem("todo", JSON.stringify(store.todo));
-    localStorage.setItem("category", JSON.stringify(store.category));
-  }, [store.category, store.todo]);
-
   const addMemo = useCallback(
-    (category: string, x: number, bgColor?: string) => {
-      store.addMemo(category, x + 20 * store.todo.length, bgColor);
+    (category: string, x: number, y: number, bgColor?: string) => {
+      store.addMemo(category, x + 20, y + 20, bgColor);
     },
     [store]
   );
