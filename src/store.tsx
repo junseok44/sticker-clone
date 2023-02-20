@@ -7,7 +7,7 @@ import {
   autorun,
 } from "mobx";
 import { palette } from "./lib/palette";
-import { v1 as uuidv1 } from "uuid";
+import { v3, v4 } from "uuid";
 
 export class todoItem implements Ttodo {
   msg = "";
@@ -139,22 +139,31 @@ export class todoStore implements TtodoStore {
     );
   }
 
-  addCategory(catName: string, bgColor: string) {
-    this.category.push({ name: catName, bgColor });
+  addCategory(categoryName: string, bgColor: string) {
+    const newCategory = {
+      id: v4(),
+      name: categoryName,
+      bgColor,
+    };
+
+    this.category.push(newCategory);
+
+    return newCategory;
   }
 
   // 이 부분이 사실 category id 시에 카테고리에서 그걸 찾아서
   // 카테고리 이름과 bgCOlor를 설정하는것으로 바뀌어야 함.
 
-  deleteCategory(catName: string) {
-    this.category = this.category.filter((cat) => cat.name !== catName);
+  deleteCategory(categoryId: string) {
+    this.category = this.category.filter((cat) => cat.id !== categoryId);
   }
 
-  changeCategory(a: number, b: string, c: string) {
-    const target = this.todo.find((item) => item.date == a);
-    if (target) {
-      target.category = b;
-      target.bgColor = c;
+  changeCategory(itemId: number, categoryId: string) {
+    const target = this.todo.find((item) => item.date == itemId);
+    const category = this.category.find((cat) => cat.id === categoryId);
+    if (target && category) {
+      target.bgColor = category.bgColor;
+      target.category = category.name;
     }
   }
 }

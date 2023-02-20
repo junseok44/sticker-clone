@@ -33,7 +33,7 @@ const ModalContainer = styled.div`
 `;
 
 const MemoCatModal = ({
-  id,
+  id: memoId,
   setModal,
 }: {
   id: number;
@@ -41,13 +41,13 @@ const MemoCatModal = ({
 }) => {
   const store = useContext(StoreContext);
 
-  const changeCategory = (name: string, bgColor: string) => {
-    store?.changeCategory(id, name, bgColor);
+  const changeCategory = (id: string) => {
+    store?.changeCategory(memoId, id);
   };
 
-  const onClick = (e: React.MouseEvent<HTMLDivElement>, cat: Tcategory) => {
+  const onClick = (e: React.MouseEvent<HTMLDivElement>, id: string) => {
     e.stopPropagation();
-    changeCategory(cat.name, cat.bgColor);
+    changeCategory(id);
     setModal(false);
   };
 
@@ -57,7 +57,7 @@ const MemoCatModal = ({
       <MemoCategoryAdd
         store={store}
         setModal={setModal}
-        id={id}
+        memoId={memoId}
       ></MemoCategoryAdd>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)" }}>
         {store?.category.map((cat) => (
@@ -67,7 +67,7 @@ const MemoCatModal = ({
               cursor: "pointer",
             }}
             onClick={(e) => {
-              onClick(e, cat);
+              onClick(e, cat.id);
             }}
           >
             #{cat.name}

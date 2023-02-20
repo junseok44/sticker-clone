@@ -6,11 +6,11 @@ import { TtodoStore } from "../lib/types";
 const MemoCategoryAdd = ({
   store,
   setModal,
-  id,
+  memoId,
 }: {
   store: TtodoStore | null;
   setModal?: React.Dispatch<React.SetStateAction<boolean>>;
-  id?: number;
+  memoId?: number;
 }) => {
   const [cgInput, setcgInput] = useStateWithPromises("");
   const [cgColor, setCgColor] = useStateWithPromises("");
@@ -20,9 +20,9 @@ const MemoCategoryAdd = ({
 
   useEffect(() => {
     if (store && isAddedCategory) {
-      store.addCategory(cgInput, cgColor);
-      if (setModal && id) {
-        store?.changeCategory(id, cgInput, cgColor);
+      const newCategory = store.addCategory(cgInput, cgColor);
+      if (setModal && memoId) {
+        store?.changeCategory(memoId, newCategory.id);
         setModal(false);
       }
       setIsAddedCategory(false);
@@ -63,13 +63,6 @@ const MemoCategoryAdd = ({
 
       await setcgInput("");
       await setCgColor("");
-
-      /*
-      store.addCategory(cgInput, selectedCgColor);
-      여기서 바로 store.addCategory하면 안된단다. 왜냐하면
-      addCategory가 참조하고 있는 store.addCategory는 여전히 낡은것이기 때문이라고.
-      그래서 useEffect를 통해서 이 값이 바뀌면 업데이트 되도록 해줘야 함.
-      */
     },
     [store, cgInput, cgColor, setcgInput, setCgColor, setModal]
   );

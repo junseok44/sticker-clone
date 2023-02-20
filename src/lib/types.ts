@@ -12,9 +12,9 @@ export interface TtodoStore {
   changePosition: (id: number, xPos: number, yPos: number) => void;
   changeZIndex: (id: number) => void;
   changeSize: (id: number, width: number, height: number) => void;
-  addCategory: (category: string, bgColor: string) => void;
-  deleteCategory: (category: string) => void;
-  changeCategory: (id: number, newCategory: string, newBgColor: string) => void;
+  addCategory: (name: string, bgColor: string) => Tcategory;
+  deleteCategory: (categoryId: string) => void;
+  changeCategory: (itemId: number, categoryId: string) => void;
 }
 
 export interface Ttodo {
@@ -37,6 +37,7 @@ export interface TmovingObj {
 }
 
 export interface Tcategory {
+  id: string;
   name: string;
   bgColor: string;
 }

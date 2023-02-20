@@ -17,6 +17,14 @@ const App = ({ store }: { store: TtodoStore }) => {
     },
     [store]
   );
+
+  const changeZIndex = useCallback(
+    (id: number) => {
+      store.changeZIndex(id);
+    },
+    [store]
+  );
+
   return (
     <div style={{ display: "flex" }}>
       <Outlet context={{ store, addMemo }}></Outlet>

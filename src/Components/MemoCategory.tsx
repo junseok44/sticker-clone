@@ -16,9 +16,9 @@ export const CircleItem = styled.div<{ bgColor: string }>`
 `;
 
 const MemoCategory = ({ store }: { store: TtodoStore }) => {
-  const onDeleteCategory = (catName: string) => {
-    store.deleteCategory(catName);
-    store.deleteMemoInCategory(catName);
+  const onDeleteCategory = (categoryId: string) => {
+    store.deleteCategory(categoryId);
+    store.deleteMemoInCategory(categoryId);
   };
 
   return (
@@ -50,7 +50,7 @@ const MemoCategory = ({ store }: { store: TtodoStore }) => {
               <Link to={`category/${cat.name}`}>#{cat.name}</Link>
               <div
                 style={{ color: "red", cursor: "pointer" }}
-                onClick={() => onDeleteCategory(cat.name)}
+                onClick={() => onDeleteCategory(cat.id)}
               >
                 X
               </div>
