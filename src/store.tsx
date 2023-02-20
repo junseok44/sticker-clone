@@ -143,6 +143,9 @@ export class todoStore implements TtodoStore {
     this.category.push({ name: catName, bgColor });
   }
 
+  // 이 부분이 사실 category id 시에 카테고리에서 그걸 찾아서
+  // 카테고리 이름과 bgCOlor를 설정하는것으로 바뀌어야 함.
+
   deleteCategory(catName: string) {
     this.category = this.category.filter((cat) => cat.name !== catName);
   }
