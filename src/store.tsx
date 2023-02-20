@@ -88,7 +88,6 @@ export class todoStore implements TtodoStore {
   }
 
   addMemo(category: string, x: number, y: number, bgColor?: string) {
-    console.log(this.todo.length);
     this.todo.push(new todoItem(this.todo.length, category, x, y, bgColor));
     // 이때 length값은 0이므로. zIndex값은 0부터 생성도니다.
   }

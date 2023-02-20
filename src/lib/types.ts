@@ -48,3 +48,5 @@ export type TaddMemo = (
   y: number,
   bgColor?: string
 ) => void;
+
+export type TchangeZIndex = (Id: number) => void;

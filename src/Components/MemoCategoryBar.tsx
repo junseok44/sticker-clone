@@ -25,7 +25,7 @@ const MemoCategoryBar = ({
           position: "relative",
         }}
       >
-        {item.category ? "#" + item.category : null}
+        {item.category ? "#" + item.category : "#태그 추가"}
       </div>
       {isCategoryModalOpen && (
         <MemoCatModal

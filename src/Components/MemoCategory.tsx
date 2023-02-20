@@ -30,7 +30,7 @@ const MemoCategory = ({ store }: { store: TtodoStore }) => {
           style={{
             width: "100%",
             minHeight: "3rem",
-            border: "1px solid black",
+            // border: "1px solid black",
             display: "grid",
             gridTemplateColumns: "repeat(2, 2fr)",
             gridAutoRows: "2rem",

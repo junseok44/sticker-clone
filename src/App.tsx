@@ -27,7 +27,7 @@ const App = ({ store }: { store: TtodoStore }) => {
 
   return (
     <div style={{ display: "flex" }}>
-      <Outlet context={{ store, addMemo }}></Outlet>
+      <Outlet context={{ store, addMemo, changeZIndex }}></Outlet>
       <MemoContainer store={store} addMemo={addMemo}></MemoContainer>
     </div>
   );
