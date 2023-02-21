@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/sticker-clone/static/css/main.90f6920e.css",
-    "main.js": "/sticker-clone/static/js/main.836ede22.js",
+    "main.js": "/sticker-clone/static/js/main.ef82659a.js",
     "index.html": "/sticker-clone/index.html",
     "main.90f6920e.css.map": "/sticker-clone/static/css/main.90f6920e.css.map",
-    "main.836ede22.js.map": "/sticker-clone/static/js/main.836ede22.js.map"
+    "main.ef82659a.js.map": "/sticker-clone/static/js/main.ef82659a.js.map"
   },
   "entrypoints": [
     "static/css/main.90f6920e.css",
-    "static/js/main.836ede22.js"
+    "static/js/main.ef82659a.js"
   ]
 }
