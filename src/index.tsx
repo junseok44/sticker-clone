@@ -29,7 +29,8 @@ const router = createBrowserRouter(
       </Route>
       <Route path="*" element={<div>error!!</div>}></Route>
     </>
-  )
+  ),
+  { basename: "/sticker-clone/" }
 );
 
 root.render(
