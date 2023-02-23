@@ -1,10 +1,9 @@
 import { observer } from "mobx-react";
-import React, { useState, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useStateWithPromises } from "../lib/hooks";
-import { colorArray } from "../lib/palette";
-import { TtodoStore } from "../lib/types";
+import { TdeleteCategory, TtodoStore } from "../lib/types";
+import CategoryListItem from "./CategoryListItem";
+import ConfirmModal from "./ConfirmModal";
 import MemoCategoryAdd from "./MemoCategoryAdd";
 
 export const CircleItem = styled.div<{ bgColor: string }>`
@@ -15,12 +14,13 @@ export const CircleItem = styled.div<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor};
 `;
 
-const MemoCategory = ({ store }: { store: TtodoStore }) => {
-  const onDeleteCategory = (categoryId: string) => {
-    store.deleteCategory(categoryId);
-    store.deleteMemoInCategory(categoryId);
-  };
-
+const MemoCategory = ({
+  store,
+  deleteCategory,
+}: {
+  store: TtodoStore;
+  deleteCategory: TdeleteCategory;
+}) => {
   return (
     <>
       <MemoCategoryAdd store={store}></MemoCategoryAdd>
@@ -37,24 +37,11 @@ const MemoCategory = ({ store }: { store: TtodoStore }) => {
           }}
         >
           {store.category.map((cat) => (
-            <div style={{ display: "flex" }}>
-              <div
-                style={{
-                  width: "1.3rem",
-                  height: "1.3rem",
-                  borderRadius: "50%",
-                  backgroundColor: cat.bgColor ? cat.bgColor : "black",
-                  marginRight: "0.3rem",
-                }}
-              ></div>
-              <Link to={`category/${cat.name}`}>#{cat.name}</Link>
-              <div
-                style={{ color: "red", cursor: "pointer" }}
-                onClick={() => onDeleteCategory(cat.id)}
-              >
-                X
-              </div>
-            </div>
+            <CategoryListItem
+              key={cat.id}
+              item={cat}
+              deleteCategory={deleteCategory}
+            ></CategoryListItem>
           ))}
         </div>
       </div>

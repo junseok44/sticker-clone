@@ -25,9 +25,15 @@ const App = ({ store }: { store: TtodoStore }) => {
     [store]
   );
 
+  const deleteCategory = (catId: string) => {
+    store.deleteCategory(catId);
+  };
+
   return (
     <div style={{ display: "flex" }}>
-      <Outlet context={{ store, addMemo, changeZIndex }}></Outlet>
+      <Outlet
+        context={{ store, addMemo, changeZIndex, deleteCategory }}
+      ></Outlet>
       <MemoContainer store={store} addMemo={addMemo}></MemoContainer>
     </div>
   );

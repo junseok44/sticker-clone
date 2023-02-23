@@ -7,7 +7,6 @@ export interface TtodoStore {
   addMemo: TaddMemo;
   editMemo: (id: number, msg: string) => void;
   deleteMemo: (id: number) => void;
-  deleteMemoInCategory: (name123: string) => void;
   resetMemoList: () => void;
   changePosition: (id: number, xPos: number, yPos: number) => void;
   changeZIndex: (id: number) => void;
@@ -50,3 +49,4 @@ export type TaddMemo = (
 ) => void;
 
 export type TchangeZIndex = (Id: number) => void;
+export type TdeleteCategory = (catId: string) => void;

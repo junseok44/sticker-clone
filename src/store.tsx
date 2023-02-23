@@ -83,8 +83,10 @@ export class todoStore implements TtodoStore {
   }
 
   loadLocalStorage() {
-    this.todo = JSON.parse(this.localStorage?.getItem("todo") || "");
-    this.category = JSON.parse(this.localStorage?.getItem("category") || "");
+    // 아예 없는 경우에 대한 에러처리.
+    // 지금 로컬스토리지에는 todo도 없고, category도 없다.
+    this.todo = JSON.parse(this.localStorage?.getItem("todo") || "[]");
+    this.category = JSON.parse(this.localStorage?.getItem("category") || "[]");
   }
 
   addMemo(category: string, x: number, y: number, bgColor?: string) {
@@ -103,10 +105,6 @@ export class todoStore implements TtodoStore {
 
   resetMemoList() {
     this.todo = [];
-  }
-
-  deleteMemoInCategory(categoryName: string) {
-    this.todo = this.todo.filter((item) => item.category !== categoryName);
   }
 
   changePosition(id: number, xPos: number, yPos: number) {
@@ -154,6 +152,8 @@ export class todoStore implements TtodoStore {
   // 카테고리 이름과 bgCOlor를 설정하는것으로 바뀌어야 함.
 
   deleteCategory(categoryId: string) {
+    const category = this.category.find((cat) => cat.id == categoryId);
+    this.todo = this.todo.filter((item) => item.category !== category?.name);
     this.category = this.category.filter((cat) => cat.id !== categoryId);
   }
 

@@ -13,6 +13,7 @@ import { observer } from "mobx-react";
 import { useParams } from "react-router-dom";
 import { todoStore } from "../store";
 import MemoAdd from "./MemoAdd";
+import ConfirmModal from "./ConfirmModal";
 
 export const StoreContext = createContext<TtodoStore | null>(null);
 
@@ -29,20 +30,7 @@ const MemoContainer = ({
   const [currentMemoId, setcurrentMemoId] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isAddModal, setIsAddModal] = useState<boolean>(false);
-  const params = useParams();
-
-  const addMemoWithParams = useCallback(() => {
-    if (!params.category) {
-      addMemo("", 20, 20);
-      return;
-    }
-    const currentCat = store.category.find(
-      (cat) => cat.name == params.category
-    );
-    if (currentCat) addMemo(currentCat.name, 20, 20, currentCat.bgColor);
-  }, [params, store, addMemo]);
-  // addMemo에서 dependencies를 안써주면은
-  // 이 함수는 계속 과거의 params.category를 참고하게 된다.
+  const [isResetModal, setIsResetModal] = useState(false);
 
   const changePos = useCallback(
     (id: number, xPos: number, yPos: number) => {
@@ -138,7 +126,17 @@ const MemoContainer = ({
       >
         console todo List
       </button>
-      <button onClick={() => store.resetMemoList()}>reset memo</button>
+      <button onClick={() => setIsResetModal(true)}>
+        reset memo
+        {isResetModal && (
+          <ConfirmModal
+            confirmFunction={() => store.resetMemoList()}
+            setModalController={setIsResetModal}
+          >
+            정말 모든 메모를 삭제하시겠습니까?
+          </ConfirmModal>
+        )}
+      </button>
       {isAddModal && (
         <MemoAdd
           category={store.category}

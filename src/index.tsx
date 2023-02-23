@@ -12,6 +12,7 @@ import {
 import { createRoutesFromElements } from "react-router";
 import MemoHome from "./page/MemoHomeListPage";
 import MemoDetailPage from "./page/MemoDetailListPage";
+import { Helmet } from "react-helmet";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -30,11 +31,14 @@ const router = createBrowserRouter(
       <Route path="*" element={<div>error!!</div>}></Route>
     </>
   ),
-  { basename: "/sticker-clone/" }
+  { basename: "/sticker-clone" }
 );
 
 root.render(
   <React.StrictMode>
+    <Helmet>
+      <title>STICKER_JS</title>
+    </Helmet>
     <RouterProvider router={router}></RouterProvider>
   </React.StrictMode>
 );

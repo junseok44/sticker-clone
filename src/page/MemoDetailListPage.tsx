@@ -22,7 +22,6 @@ const MemoDetailPage = () => {
   const onDeleteCategory = useCallback(() => {
     if (category) {
       store.deleteCategory(category.name);
-      store.deleteMemoInCategory(category.name);
     }
   }, [params, store]);
 
