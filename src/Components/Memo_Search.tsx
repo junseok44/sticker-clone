@@ -5,19 +5,17 @@ import { Ttodo } from "../lib/types";
 const Memo_Search = ({
   setSearchArray,
   todoArray,
+  searchInput,
+  onSearchMemoList,
 }: {
+  searchInput: string;
   todoArray: Ttodo[];
   setSearchArray: (newState: Ttodo[]) => Promise<unknown>;
+  onSearchMemoList: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
-  const [searchInput, changeSearchInput] = useStateWithPromises<string>("");
-
   useEffect(() => {
     setSearchArray(todoArray.filter((item) => item.msg.includes(searchInput)));
   }, [searchInput]);
-
-  const onSearchMemoList = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    await changeSearchInput(e.target.value);
-  };
 
   return (
     <>

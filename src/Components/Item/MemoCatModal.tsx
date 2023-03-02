@@ -32,6 +32,14 @@ const ModalContainer = styled.div`
   z-index: 100;
 `;
 
+const ModalOverlay = styled.div`
+  width: 200%;
+  height: 200%;
+  position: absolute;
+  z-index: -10;
+  background-color: black;
+`;
+
 const MemoCatModal = ({
   id: memoId,
   setModal,

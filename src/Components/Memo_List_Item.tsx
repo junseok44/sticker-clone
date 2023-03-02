@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { TchangeZIndex, Ttodo } from "../lib/types";
+import { observer } from "mobx-react";
 
 const MemoListItemContainer = styled.div<{ color: string }>`
   color: ${(props) => props.color};
@@ -35,4 +36,4 @@ const Memo_List_Item = ({
   );
 };
 
-export default Memo_List_Item;
+export default observer(Memo_List_Item);

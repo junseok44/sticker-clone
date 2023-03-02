@@ -22,6 +22,11 @@ const MemoHome = () => {
   }>();
 
   const [searchArray, setSearchArray] = useStateWithPromises<Ttodo[]>([]);
+  const [searchInput, changeSearchInput] = useStateWithPromises<string>("");
+
+  const onSearchMemoList = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    await changeSearchInput(e.target.value);
+  };
 
   return (
     <div
@@ -40,18 +45,27 @@ const MemoHome = () => {
         <button onClick={() => addMemo("", 20, 20)}>메모 추가</button>
       </div>
       <Memo_Search
+        searchInput={searchInput}
         todoArray={store.todo}
         setSearchArray={setSearchArray}
+        onSearchMemoList={onSearchMemoList}
       ></Memo_Search>
       <MemoCategory
         store={store}
         deleteCategory={deleteCategory}
       ></MemoCategory>
-      {searchArray ? (
-        // <div>hello</div>
-        <MemoList todoList={searchArray} changeZIndex={changeZIndex}></MemoList>
+      {searchInput ? (
+        <MemoList
+          title="검색 결과"
+          todoList={searchArray}
+          changeZIndex={changeZIndex}
+        ></MemoList>
       ) : (
-        <MemoList todoList={store.todo} changeZIndex={changeZIndex}></MemoList>
+        <MemoList
+          title="모든 메모"
+          todoList={store.todo}
+          changeZIndex={changeZIndex}
+        ></MemoList>
       )}
     </div>
   );

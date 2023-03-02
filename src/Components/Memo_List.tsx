@@ -5,7 +5,9 @@ import Memo_List_Item from "./Memo_List_Item";
 const MemoList = ({
   todoList,
   changeZIndex,
+  title,
 }: {
+  title: string;
   todoList: Ttodo[];
   changeZIndex?: TchangeZIndex;
 }) => {
@@ -18,7 +20,8 @@ const MemoList = ({
         overflow: "scroll",
       }}
     >
-      최근 메모<hr></hr>
+      {title}
+      <hr></hr>
       {todoList.length !== 0 ? (
         todoList.map((item) => (
           <Memo_List_Item

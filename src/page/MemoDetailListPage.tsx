@@ -24,6 +24,7 @@ const MemoDetailPage = () => {
   const [searchedCategoryArr, setSearchedCategoryArr] = useStateWithPromises<
     Ttodo[] | null
   >(null);
+  const [searchInput, changeSearchInput] = useStateWithPromises<string>("");
 
   // param에서 name 찾아서 store에서 그 카테고리가 존재하는지 대조.
   useEffect(() => {
@@ -35,9 +36,13 @@ const MemoDetailPage = () => {
 
   const onDeleteCategory = useCallback(() => {
     if (category) {
-      store.deleteCategory(category.name);
+      store.deleteCategory(category.id);
     }
-  }, [params, store]);
+  }, [category, store]);
+
+  const onSearchMemoList = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    await changeSearchInput(e.target.value);
+  };
 
   return (
     <div
@@ -83,18 +88,22 @@ const MemoDetailPage = () => {
             </div>
           </div>
           <Memo_Search
+            onSearchMemoList={onSearchMemoList}
+            searchInput={searchInput}
             todoArray={store.todo.filter(
               (item) => item.category === category.name
             )}
             setSearchArray={setSearchedCategoryArr}
           ></Memo_Search>
-          {searchedCategoryArr ? (
+          {searchedCategoryArr && searchInput ? (
             <MemoList
+              title="검색 결과"
               todoList={searchedCategoryArr}
               changeZIndex={changeZIndex}
             ></MemoList>
           ) : (
             <MemoList
+              title="카테고리 내 메모"
               todoList={store.todo.filter(
                 (todo) => todo.category == category.name
               )}

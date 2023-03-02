@@ -48,14 +48,15 @@ const Memo_Header = styled.div<{ isFocus: boolean; bgColor: string }>`
   transition: top 0.2s ease-in-out;
 `;
 
-const Memo_Text = styled.textarea`
+const Memo_Text = styled.textarea<{ isFocus: boolean }>`
   all: unset;
   resize: none;
   width: 100%;
   overflow: hidden;
-  height: 100%;
+  height: ${(props) => (props.isFocus ? "calc(100% - 4rem)" : "90%")};
   font-size: 0.8rem;
   line-height: 1rem;
+  margin-top: 0.8rem;
 `;
 
 const Memo_Footer = styled.div<{ isFocus: boolean }>`
@@ -214,7 +215,11 @@ const Memo = ({
         isCategoryModalOpen={isCategoryModalOpen}
         setIsCategoryModalOpen={setIsCategoryModalOpen}
       ></MemoCategoryBar>
-      <Memo_Text value={memoInput} onChange={onChangeMemo}></Memo_Text>
+      <Memo_Text
+        value={memoInput}
+        onChange={onChangeMemo}
+        isFocus={currentMemoId === item.date}
+      ></Memo_Text>
       <Memo_Footer isFocus={currentMemoId === item.date}>
         <Btn>+</Btn>
         <Btn>+</Btn>
