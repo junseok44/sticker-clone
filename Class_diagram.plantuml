@@ -1,0 +1,83 @@
+@startuml sticker
+
+
+
+object memoDetailPage {
+    OutletContext addMemo
+    OutletContext store
+
+    state category: Tcategory
+}
+object memoHomePage {
+    OutletContext store
+    OutletContext addMemo: function
+    OutletContext changeZIndex: function
+    OutletContext deleteCategory : function
+
+    state searchInput : string
+    state searchArray : Ttodo[]
+}
+
+object memo_search {
+    props setSearchArray : function
+    
+    state memo_search_Input : string
+
+}
+
+
+object memo_category {
+    <font color="red">props store : TtodoStore
+    <font color="blue">props deleteCategory : function
+}
+object memo_list {
+    props todoList : Ttodo[]
+    props changeZIndex : function
+}
+
+object memo_category_add {
+    props store : TtodoStore
+    props setModalController? : function
+    props memoId? : function
+}
+object memo_category_list {
+    <font color="red">props store : TtodoStore
+    <font color="blue">props deleteCategory: function
+}
+
+object memo_category_list_item {
+    props categoryItem : category
+    <font color="blue">props deleteCategory : function
+}
+
+object Confirm_modal {
+    <font color="blue"> props onConfirmFunction : function
+    props text : string
+    props setModalController : function
+}
+
+memo_category *-- memo_category_add
+memo_category *-- memo_category_list
+memo_category_list *-- memo_category_list_item
+memo_category_list_item *-- Confirm_modal
+
+
+memoHomePage *-- memo_list
+memoHomePage *-- memo_category
+memoHomePage *-- memo_search
+
+
+memoDetailPage *-- memo_search
+memoDetailPage *-- memo_list
+
+object memoContainer
+object memoItem
+
+
+
+
+
+
+
+
+@enduml

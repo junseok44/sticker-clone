@@ -1,19 +1,12 @@
 import { toJS } from "mobx";
-import React, {
-  useState,
-  useCallback,
-  useRef,
-  useEffect,
-  useContext,
-  createContext,
-} from "react";
-import Memo from "./Memo";
-import { TaddMemo, TmovingObj, TtodoStore } from "../lib/types";
+import React, { useState, useCallback, useRef, createContext } from "react";
+import Memo from "../Item/Memo";
+import { TaddMemo, TmovingObj, TtodoStore } from "../../lib/types";
 import { observer } from "mobx-react";
 import { useParams } from "react-router-dom";
-import { todoStore } from "../store";
-import MemoAdd from "./MemoAdd";
-import ConfirmModal from "./ConfirmModal";
+import { todoStore } from "../../store";
+import MemoAdd from "./Container_addModal";
+import ConfirmModal from "../ConfirmModal";
 
 export const StoreContext = createContext<TtodoStore | null>(null);
 
@@ -138,11 +131,13 @@ const MemoContainer = ({
         )}
       </button>
       {isAddModal && (
-        <MemoAdd
-          category={store.category}
-          addMemo={addMemo}
-          setIsAddModal={setIsAddModal}
-        ></MemoAdd>
+        <StoreContext.Provider value={store}>
+          <MemoAdd
+            category={store.category}
+            addMemo={addMemo}
+            setIsAddModal={setIsAddModal}
+          ></MemoAdd>
+        </StoreContext.Provider>
       )}
 
       <StoreContext.Provider value={store}>

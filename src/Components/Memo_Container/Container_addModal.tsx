@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { TaddMemo, Tcategory } from "../lib/types";
+import React, { useState, useContext } from "react";
+import { TaddMemo, Tcategory } from "../../lib/types";
 import { observer } from "mobx-react";
+import MemoCategoryAdd from "../Category/Category_Add";
+import { StoreContext } from "./Container";
 
 interface TMemoAddProps {
   category: Tcategory[];
@@ -14,6 +16,7 @@ const MemoAdd = ({ category, addMemo, setIsAddModal }: TMemoAddProps) => {
   );
   const [errMsg, setErrMsg] = useState("");
 
+  const store = useContext(StoreContext);
   return (
     <div style={{ position: "absolute", zIndex: "100" }}>
       <div></div>
@@ -25,6 +28,7 @@ const MemoAdd = ({ category, addMemo, setIsAddModal }: TMemoAddProps) => {
         }}
       >
         카테고리 선택
+        <MemoCategoryAdd store={store}></MemoCategoryAdd>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)" }}>
           {category.map((item) => (
             <div
@@ -36,7 +40,7 @@ const MemoAdd = ({ category, addMemo, setIsAddModal }: TMemoAddProps) => {
                     : "none",
               }}
               onClick={() => {
-                if (selectedCategory) {
+                if (selectedCategory?.name === item.name) {
                   setSelectedCategory(null);
                   return;
                 }

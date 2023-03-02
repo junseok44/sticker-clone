@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useStateWithPromises } from "../lib/hooks";
-import { colorArray } from "../lib/palette";
-import { TtodoStore } from "../lib/types";
+import { useStateWithPromises } from "../../lib/hooks";
+import { colorArray } from "../../lib/palette";
+import { TtodoStore } from "../../lib/types";
+import { observer } from "mobx-react";
 
 const MemoCategoryAdd = ({
   store,
@@ -111,4 +112,4 @@ const MemoCategoryAdd = ({
   );
 };
 
-export default MemoCategoryAdd;
+export default observer(MemoCategoryAdd);

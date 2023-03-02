@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { TaddMemo, TmovingObj, Ttodo } from "../lib/types";
+import { TaddMemo, TmovingObj, Ttodo } from "../../lib/types";
 import { observer } from "mobx-react";
 import { useResizeDetector } from "react-resize-detector";
 import styled from "styled-components";
-import { palette } from "../lib/palette";
+import { palette } from "../../lib/palette";
 import { MutableRefObject } from "react";
 import MemoCatModal from "./MemoCatModal";
 import MemoCategoryBar from "./MemoCategoryBar";

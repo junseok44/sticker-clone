@@ -1,17 +1,31 @@
 import React, { useEffect, useCallback, useState } from "react";
 import { useParams, Link, useOutletContext } from "react-router-dom";
-import { TaddMemo, Tcategory, TtodoStore } from "../lib/types";
+import {
+  TaddMemo,
+  Tcategory,
+  TchangeZIndex,
+  Ttodo,
+  TtodoStore,
+} from "../lib/types";
 import { observer } from "mobx-react";
-import MemoList from "../Components/MemoList";
+import MemoList from "../Components/Memo_List";
+import Memo_Search from "../Components/Memo_Search";
+import { useStateWithPromises } from "../lib/hooks";
 
 const MemoDetailPage = () => {
   const params = useParams();
-  const { store, addMemo } = useOutletContext<{
+  const { store, addMemo, changeZIndex } = useOutletContext<{
     store: TtodoStore;
     addMemo: TaddMemo;
+    changeZIndex: TchangeZIndex;
   }>();
   const [category, setCategory] = useState<Tcategory | null>();
 
+  const [searchedCategoryArr, setSearchedCategoryArr] = useStateWithPromises<
+    Ttodo[] | null
+  >(null);
+
+  // param에서 name 찾아서 store에서 그 카테고리가 존재하는지 대조.
   useEffect(() => {
     const currentCat = store.category.find(
       (cat) => cat.name === params.category
@@ -68,16 +82,29 @@ const MemoDetailPage = () => {
               </button>
             </div>
           </div>
-          <input placeholder={`${category.name}에서 찾아보기..`}></input>
-          <MemoList
-            todoList={store.todo.filter(
-              (todo) => todo.category == category.name
+          <Memo_Search
+            todoArray={store.todo.filter(
+              (item) => item.category === category.name
             )}
-          ></MemoList>
+            setSearchArray={setSearchedCategoryArr}
+          ></Memo_Search>
+          {searchedCategoryArr ? (
+            <MemoList
+              todoList={searchedCategoryArr}
+              changeZIndex={changeZIndex}
+            ></MemoList>
+          ) : (
+            <MemoList
+              todoList={store.todo.filter(
+                (todo) => todo.category == category.name
+              )}
+              changeZIndex={changeZIndex}
+            ></MemoList>
+          )}
         </>
       ) : (
         <div>
-          no category{" "}
+          no category
           <button>
             <Link to={"/"}>돌아가기</Link>
           </button>

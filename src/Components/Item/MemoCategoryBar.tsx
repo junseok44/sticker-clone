@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Ttodo } from "../lib/types";
+import { Ttodo } from "../../lib/types";
 import MemoCatModal from "./MemoCatModal";
 
 const MemoCategoryBar = ({

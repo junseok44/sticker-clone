@@ -5,13 +5,13 @@ import React, {
   useRef,
   useEffect,
 } from "react";
-import { StoreContext } from "./MemoContainer";
+import { StoreContext } from "../Memo_Container/Container";
 import { observer } from "mobx-react";
-import { colorArray } from "../lib/palette";
-import { CircleItem } from "./MemoCategory";
+import { colorArray } from "../../lib/palette";
+import { CircleItem } from "../Category/Category";
 import styled from "styled-components";
-import { Tcategory } from "../lib/types";
-import MemoCategoryAdd from "./MemoCategoryAdd";
+import { Tcategory } from "../../lib/types";
+import MemoCategoryAdd from "../Category/Category_Add";
 
 const CircleItemContainer = styled.div`
   display: flex;

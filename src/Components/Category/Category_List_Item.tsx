@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Tcategory, TdeleteCategory } from "../lib/types";
-import ConfirmModal from "./ConfirmModal";
+import { Tcategory, TdeleteCategory } from "../../lib/types";
+import ConfirmModal from "../ConfirmModal";
 
 const CategoryListItem = ({
   item,

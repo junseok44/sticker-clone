@@ -2,8 +2,7 @@ import { createContext, useCallback, useEffect } from "react";
 import { Ttodo, TtodoStore } from "./lib/types";
 import { observer } from "mobx-react";
 import { Outlet } from "react-router-dom";
-import MemoContainer from "./Components/MemoContainer";
-import useDeepCompareEffect from "use-deep-compare-effect";
+import MemoContainer from "./Components/Memo_Container/Container";
 
 const setFromLocalStorage = (type: "todo" | "category", store: TtodoStore) => {
   const parsedItem = JSON.parse(localStorage.getItem(type) || "");
