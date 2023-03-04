@@ -25,10 +25,11 @@ const MemoAdd = ({ category, addMemo, setIsAddModal }: TMemoAddProps) => {
           width: "20rem",
           backgroundColor: "white",
           border: "1px solid black",
+          padding: "1.5rem",
         }}
       >
-        카테고리 선택
         <MemoCategoryAdd store={store}></MemoCategoryAdd>
+        카테고리 선택
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)" }}>
           {category.map((item) => (
             <div

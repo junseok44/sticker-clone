@@ -3,7 +3,13 @@ import { useStateWithPromises } from "../../lib/hooks";
 import { colorArray } from "../../lib/palette";
 import { TtodoStore } from "../../lib/types";
 import { observer } from "mobx-react";
-import { Button, TextField } from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
+import styled from "styled-components";
+
+const Item = styled.div`
+  border: 1px solid black;
+  height: 100%;
+`;
 
 const MemoCategoryAdd = ({
   store,
@@ -70,55 +76,69 @@ const MemoCategoryAdd = ({
   );
 
   return (
-    <>
-      <form
-        onSubmit={addCategory}
-        style={{
-          display: "flex",
-          alignItems: "flex-end",
-          justifyContent: "space-between",
-        }}
-      >
-        <TextField
-          id="standard-basic"
-          label="카테고리 추가.."
-          variant="standard"
-          onChange={async (e) => {
-            setCgErrMsg("");
-            await setcgInput(e.target.value);
-          }}
-          ref={InputRef}
-          value={cgInput}
-          style={{ width: "70%" }}
-        />
-        <Button variant="contained">추가</Button>
-      </form>
-      {!setModal && (
-        <div style={{ display: "flex" }}>
-          {colorArray.map((item) => (
-            <div
-              style={{
-                width: "1.3rem",
-                height: "1.3rem",
-                borderRadius: "50%",
-                border: item == cgColor ? "3px solid black" : "none",
-                backgroundColor: item,
-                marginRight: "0.3rem",
-              }}
-              onClick={async () => {
-                if (cgColor == item) {
-                  await setCgColor("");
-                  return;
-                }
-                await setCgColor(item);
+    <div style={{ marginBottom: "1rem" }}>
+      <form onSubmit={addCategory}>
+        <Grid
+          container
+          spacing={1}
+          justifyContent="center"
+          alignItems="flex-end"
+        >
+          <Grid item xs={8}>
+            <TextField
+              id="standard-basic"
+              label="카테고리 추가.."
+              variant="standard"
+              onChange={async (e) => {
                 setCgErrMsg("");
+                await setcgInput(e.target.value);
               }}
-            ></div>
-          ))}
-        </div>
-      )}
-      {cgErrMsg && <div style={{ color: "red" }}>{cgErrMsg}</div>}
-    </>
+              ref={InputRef}
+              value={cgInput}
+              style={{ width: "100%" }}
+            />
+          </Grid>
+          <Grid item xs={3} container direction="column" alignItems="center">
+            {/* <Grid item xs></Grid> */}
+            <Grid item>
+              <Button variant="contained" type="submit">
+                추가
+              </Button>
+            </Grid>
+          </Grid>
+
+          <Grid item>
+            {!setModal && (
+              <div style={{ display: "flex" }}>
+                {colorArray.map((item) => (
+                  <Grid item md={2} lg={1}>
+                    <div
+                      style={{
+                        width: "1.3rem",
+                        height: "1.3rem",
+                        borderRadius: "50%",
+                        border: item == cgColor ? "3px solid black" : "none",
+                        backgroundColor: item,
+                        marginRight: "0.3rem",
+                      }}
+                      onClick={async () => {
+                        if (cgColor == item) {
+                          await setCgColor("");
+                          return;
+                        }
+                        await setCgColor(item);
+                        setCgErrMsg("");
+                      }}
+                    ></div>
+                  </Grid>
+                ))}
+              </div>
+            )}
+            {cgErrMsg && <div style={{ color: "red" }}>{cgErrMsg}</div>}
+          </Grid>
+        </Grid>
+      </form>
+    </div>
   );
 };
 
