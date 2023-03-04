@@ -3,6 +3,7 @@ import { useStateWithPromises } from "../../lib/hooks";
 import { colorArray } from "../../lib/palette";
 import { TtodoStore } from "../../lib/types";
 import { observer } from "mobx-react";
+import { Button, TextField } from "@mui/material";
 
 const MemoCategoryAdd = ({
   store,
@@ -70,44 +71,53 @@ const MemoCategoryAdd = ({
 
   return (
     <>
-      <form onSubmit={addCategory}>
-        <input
-          placeholder="새로운 카테고리..."
-          value={cgInput}
+      <form
+        onSubmit={addCategory}
+        style={{
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+        }}
+      >
+        <TextField
+          id="standard-basic"
+          label="카테고리 추가.."
+          variant="standard"
           onChange={async (e) => {
             setCgErrMsg("");
             await setcgInput(e.target.value);
           }}
           ref={InputRef}
-        ></input>
-        <button>추가</button>
-        {!setModal && (
-          <div style={{ display: "flex" }}>
-            {colorArray.map((item) => (
-              <div
-                style={{
-                  width: "1.3rem",
-                  height: "1.3rem",
-                  borderRadius: "50%",
-                  border: item == cgColor ? "3px solid black" : "none",
-                  backgroundColor: item,
-                  marginRight: "0.3rem",
-                }}
-                onClick={async () => {
-                  if (cgColor == item) {
-                    await setCgColor("");
-                    return;
-                  }
-                  await setCgColor(item);
-                  setCgErrMsg("");
-                }}
-              ></div>
-            ))}
-          </div>
-        )}
-
-        {cgErrMsg && <div style={{ color: "red" }}>{cgErrMsg}</div>}
+          value={cgInput}
+          style={{ width: "70%" }}
+        />
+        <Button variant="contained">추가</Button>
       </form>
+      {!setModal && (
+        <div style={{ display: "flex" }}>
+          {colorArray.map((item) => (
+            <div
+              style={{
+                width: "1.3rem",
+                height: "1.3rem",
+                borderRadius: "50%",
+                border: item == cgColor ? "3px solid black" : "none",
+                backgroundColor: item,
+                marginRight: "0.3rem",
+              }}
+              onClick={async () => {
+                if (cgColor == item) {
+                  await setCgColor("");
+                  return;
+                }
+                await setCgColor(item);
+                setCgErrMsg("");
+              }}
+            ></div>
+          ))}
+        </div>
+      )}
+      {cgErrMsg && <div style={{ color: "red" }}>{cgErrMsg}</div>}
     </>
   );
 };

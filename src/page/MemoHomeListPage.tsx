@@ -12,6 +12,7 @@ import MemoCategory from "../Components/Category/Category";
 import { useState, useEffect } from "react";
 import { useStateWithPromises } from "../lib/hooks";
 import Memo_Search from "../Components/Memo_Search";
+import Button from "@mui/material/Button";
 
 const MemoHome = () => {
   const { store, addMemo, changeZIndex, deleteCategory } = useOutletContext<{
@@ -40,9 +41,10 @@ const MemoHome = () => {
         gap: "10px",
       }}
     >
-      <div style={{ display: "flex" }}>
-        <h1>스티커 메모</h1>
-        <button onClick={() => addMemo("", 20, 20)}>메모 추가</button>
+      <div>
+        <Button variant="outlined" onClick={() => addMemo("", 20, 20)}>
+          메모 추가
+        </Button>
       </div>
       <Memo_Search
         searchInput={searchInput}

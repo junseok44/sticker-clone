@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import React, { useEffect } from "react";
 import { useStateWithPromises } from "../lib/hooks";
 import { Ttodo } from "../lib/types";
@@ -19,7 +20,13 @@ const Memo_Search = ({
 
   return (
     <>
-      <input placeholder="메모 검색.." onChange={onSearchMemoList}></input>
+      <TextField
+        id="standard-basic"
+        label="메모 검색"
+        variant="standard"
+        onChange={onSearchMemoList}
+      />
+      {/* <input placeholder="메모 검색.." onChange={onSearchMemoList}></input> */}
     </>
   );
 };
