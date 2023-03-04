@@ -88,7 +88,6 @@ const MemoContainer = ({
       style={{
         position: "relative",
         border: "1px solid black",
-        width: "75%",
         height: "100vh",
       }}
       onClick={() => {

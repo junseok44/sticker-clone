@@ -53,10 +53,11 @@ const Memo_Text = styled.textarea<{ isFocus: boolean }>`
   resize: none;
   width: 100%;
   overflow: hidden;
-  height: ${(props) => (props.isFocus ? "calc(100% - 4rem)" : "90%")};
+  height: 80%;
   font-size: 0.8rem;
   line-height: 1rem;
   margin-top: 0.8rem;
+  line-height: 1.1rem;
 `;
 
 const Memo_Footer = styled.div<{ isFocus: boolean }>`
@@ -220,14 +221,14 @@ const Memo = ({
         onChange={onChangeMemo}
         isFocus={currentMemoId === item.date}
       ></Memo_Text>
-      <Memo_Footer isFocus={currentMemoId === item.date}>
+      {/* <Memo_Footer isFocus={currentMemoId === item.date}>
         <Btn>+</Btn>
         <Btn>+</Btn>
         <Btn>+</Btn>
         <Btn>+</Btn>
         <Btn>+</Btn>
         <Btn>+</Btn>
-      </Memo_Footer>
+      </Memo_Footer> */}
     </MemoContainer>
   );
 };

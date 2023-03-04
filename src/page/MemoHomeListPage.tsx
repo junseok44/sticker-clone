@@ -32,7 +32,6 @@ const MemoHome = () => {
   return (
     <div
       style={{
-        width: "25%",
         height: "100vh",
         padding: "1rem",
         boxSizing: "border-box",

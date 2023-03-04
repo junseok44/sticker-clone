@@ -3,6 +3,7 @@ import { Ttodo, TtodoStore } from "./lib/types";
 import { observer } from "mobx-react";
 import { Outlet } from "react-router-dom";
 import MemoContainer from "./Components/Memo_Container/Container";
+import { Grid } from "@mui/material";
 
 const setFromLocalStorage = (type: "todo" | "category", store: TtodoStore) => {
   const parsedItem = JSON.parse(localStorage.getItem(type) || "");
@@ -29,12 +30,23 @@ const App = ({ store }: { store: TtodoStore }) => {
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      <Outlet
-        context={{ store, addMemo, changeZIndex, deleteCategory }}
-      ></Outlet>
-      <MemoContainer store={store} addMemo={addMemo}></MemoContainer>
-    </div>
+    <Grid container>
+      <Grid item xs md={3}>
+        <Outlet
+          context={{ store, addMemo, changeZIndex, deleteCategory }}
+        ></Outlet>
+      </Grid>
+      <Grid item xs={12} md={9}>
+        <MemoContainer store={store} addMemo={addMemo}></MemoContainer>
+      </Grid>
+    </Grid>
+
+    // <div style={{ display: "flex" }}>
+    //   <Outlet
+    //     context={{ store, addMemo, changeZIndex, deleteCategory }}
+    //   ></Outlet>
+    //   <MemoContainer store={store} addMemo={addMemo}></MemoContainer>
+    // </div>
   );
 };
 
