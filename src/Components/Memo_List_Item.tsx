@@ -23,7 +23,11 @@ const Memo_List_Item = ({
   changeZIndex?: TchangeZIndex;
 }) => {
   return (
-    <ListItemButton>
+    <ListItemButton
+      onClick={() => {
+        if (changeZIndex) changeZIndex(item.date);
+      }}
+    >
       <ListItemAvatar>
         <StyledCircle bgColor={item.bgColor}></StyledCircle>
       </ListItemAvatar>
