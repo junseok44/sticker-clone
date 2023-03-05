@@ -11,6 +11,14 @@ export const StyledLink = styled(Link)`
   cursor: pointer;
 `;
 
+export const StyledCircle = styled.div<{ bgColor?: string }>`
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  background-color: ${(props) => (props.bgColor ? props.bgColor : "black")};
+  margin-right: 0.3rem;
+`;
+
 const CategoryListItem = ({
   item,
   deleteCategory,
@@ -27,19 +35,17 @@ const CategoryListItem = ({
     <Grid container>
       <ListItemButton>
         <Grid item>
-          <div
-            style={{
-              width: "1.3rem",
-              height: "1.3rem",
-              borderRadius: "50%",
-              backgroundColor: item.bgColor ? item.bgColor : "black",
-              marginRight: "0.3rem",
-            }}
-          ></div>
+          <StyledCircle bgColor={item.bgColor}></StyledCircle>
         </Grid>
         <Grid item>
           <StyledLink to={`/category/${item.id}`}>
-            <ListItemText primary={`${item.name}`}></ListItemText>
+            <ListItemText
+              primary={`${
+                item.name.length > 5
+                  ? item.name.substring(0, 4) + "..."
+                  : item.name
+              }`}
+            ></ListItemText>
           </StyledLink>
         </Grid>
         {/* <Grid item>

@@ -1,6 +1,11 @@
 import { TchangeZIndex, Ttodo } from "../lib/types";
 import { observer } from "mobx-react";
 import Memo_List_Item from "./Memo_List_Item";
+import ListSubheader from "@mui/material/ListSubheader";
+import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import Divider from "@mui/material/Divider";
 
 const MemoList = ({
   todoList,
@@ -12,28 +17,38 @@ const MemoList = ({
   changeZIndex?: TchangeZIndex;
 }) => {
   return (
-    <div
-      style={{
+    <List
+      sx={{
         width: "100%",
-        border: "1px solid black",
-        height: "100%",
-        overflow: "scroll",
+        maxWidth: 360,
+        bgcolor: "background.paper",
+        overflow: "auto",
       }}
+      component="nav"
+      // aria-labelledby="nested-list-subheader"
+      subheader={
+        <ListSubheader component="div" id="nested-list-subheader">
+          {title}
+          <Divider></Divider>
+        </ListSubheader>
+      }
     >
-      {title}
-      <hr></hr>
       {todoList.length !== 0 ? (
-        todoList.map((item) => (
-          <Memo_List_Item
-            key={item.date}
-            item={item}
-            changeZIndex={changeZIndex}
-          ></Memo_List_Item>
-        ))
+        [...todoList]
+          .sort((a, b) => (a > b ? 1 : -1))
+          .map((item) => (
+            <Memo_List_Item
+              key={item.date}
+              item={item}
+              changeZIndex={changeZIndex}
+            ></Memo_List_Item>
+          ))
       ) : (
-        <div>메모없음</div>
+        <ListItemButton>
+          <ListItemText>메모없음</ListItemText>
+        </ListItemButton>
       )}
-    </div>
+    </List>
   );
 };
 
