@@ -3,8 +3,6 @@ import React, { useState, useCallback, useRef, createContext } from "react";
 import Memo from "../Item/Memo";
 import { TaddMemo, TmovingObj, TtodoStore } from "../../lib/types";
 import { observer } from "mobx-react";
-import { useParams } from "react-router-dom";
-import { todoStore } from "../../store";
 import MemoAdd from "./Container_addModal";
 import ConfirmModal from "../ConfirmModal";
 
@@ -99,36 +97,6 @@ const MemoContainer = ({
         onMouseMove(e);
       }}
     >
-      <button onClick={() => setIsAddModal(!isAddModal)}>
-        addMemo {movingObj?.id} {currentMemoId}
-      </button>
-      <button
-        onClick={() => {
-          console.log(
-            store.todo.map((item) => {
-              return toJS(item);
-            })
-          );
-          console.log(
-            store.category.map((item) => {
-              return toJS(item);
-            })
-          );
-        }}
-      >
-        console todo List
-      </button>
-      <button onClick={() => setIsResetModal(true)}>
-        reset memo
-        {isResetModal && (
-          <ConfirmModal
-            confirmFunction={() => store.resetMemoList()}
-            setModalController={setIsResetModal}
-          >
-            정말 모든 메모를 삭제하시겠습니까?
-          </ConfirmModal>
-        )}
-      </button>
       {isAddModal && (
         <StoreContext.Provider value={store}>
           <MemoAdd
