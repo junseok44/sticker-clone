@@ -13,6 +13,7 @@ import Memo_Search from "../Components/Memo_Search";
 import { useStateWithPromises } from "../lib/hooks";
 import { Button, ButtonGroup } from "@mui/material";
 import { StyledLink } from "../Components/Category/Category_List_Item";
+import Typography from "@mui/material/Typography";
 
 const MemoDetailPage = () => {
   const params = useParams();
@@ -58,56 +59,39 @@ const MemoDetailPage = () => {
     >
       {category ? (
         <>
-          <div>
-            <div style={{ display: "flex" }}>
-              {"#" + category.name}
-              <div
-                style={{
-                  width: "1.3rem",
-                  height: "1.3rem",
-                  borderRadius: "50%",
-                  backgroundColor: category.bgColor,
-                  marginRight: "0.3rem",
-                }}
-              ></div>
-            </div>
-            <div>
-              <ButtonGroup
-                variant="outlined"
-                aria-label="outlined button group"
-              >
-                <Button
-                  style={{ fontSize: "0.8rem" }}
-                  onClick={() =>
-                    addMemo(category.name, 20, 20, category.bgColor)
-                  }
-                >
-                  메모작성
-                </Button>
-                <Button
-                  style={{ fontSize: "0.8rem" }}
-                  onClick={onDeleteCategory}
-                >
-                  <StyledLink to="/"> 카테고리 삭제</StyledLink>
-                </Button>
-                <Button style={{ fontSize: "0.8rem" }}>
-                  <StyledLink to="/"> 돌아가기 </StyledLink>
-                </Button>
-              </ButtonGroup>
-              {/* <button
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              alignSelf: "center",
+            }}
+          >
+            <div
+              style={{
+                width: "1.3rem",
+                height: "1.3rem",
+                borderRadius: "50%",
+                backgroundColor: category.bgColor,
+                marginRight: "0.3rem",
+              }}
+            ></div>
+            <Typography variant="h4">{"#" + category.name}</Typography>
+          </div>
+          <div style={{ alignSelf: "center" }}>
+            <ButtonGroup variant="outlined" aria-label="outlined button group">
+              <Button
+                size="small"
                 onClick={() => addMemo(category.name, 20, 20, category.bgColor)}
               >
-                이 태그로 메모작성
-              </button>
-              <button onClick={onDeleteCategory}>
-                <Link style={{ color: "red" }} to={"/"}>
-                  카테고리 삭제
-                </Link>
-              </button>
-              <button>
-                <Link to={"/"}>돌아가기</Link>
-              </button> */}
-            </div>
+                메모작성
+              </Button>
+              <Button size="small" onClick={onDeleteCategory}>
+                <StyledLink to="/"> 카테고리 삭제</StyledLink>
+              </Button>
+              <Button size="small">
+                <StyledLink to="/"> 돌아가기 </StyledLink>
+              </Button>
+            </ButtonGroup>
           </div>
           <Memo_Search
             onSearchMemoList={onSearchMemoList}

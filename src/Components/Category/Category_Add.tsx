@@ -81,7 +81,7 @@ const MemoCategoryAdd = ({
         <Grid
           container
           spacing={1}
-          justifyContent="center"
+          // justifyContent="center"
           alignItems="flex-end"
         >
           <Grid item xs={8}>
@@ -98,7 +98,13 @@ const MemoCategoryAdd = ({
               style={{ width: "100%" }}
             />
           </Grid>
-          <Grid item xs={3} container direction="column" alignItems="center">
+          <Grid
+            item
+            xs={4}
+            container
+            direction="column"
+            alignItems="flex-start"
+          >
             {/* <Grid item xs></Grid> */}
             <Grid item>
               <Button variant="contained" type="submit">
