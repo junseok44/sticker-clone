@@ -106,31 +106,29 @@ const MemoCategoryAdd = ({
               </Button>
             </Grid>
           </Grid>
-
           <Grid item>
             {!setModal && (
               <div style={{ display: "flex" }}>
                 {colorArray.map((item) => (
-                  <Grid item md={2} lg={1}>
-                    <div
-                      style={{
-                        width: "1.3rem",
-                        height: "1.3rem",
-                        borderRadius: "50%",
-                        border: item == cgColor ? "3px solid black" : "none",
-                        backgroundColor: item,
-                        marginRight: "0.3rem",
-                      }}
-                      onClick={async () => {
-                        if (cgColor == item) {
-                          await setCgColor("");
-                          return;
-                        }
-                        await setCgColor(item);
-                        setCgErrMsg("");
-                      }}
-                    ></div>
-                  </Grid>
+                  <div
+                    key={item}
+                    style={{
+                      width: "1.3rem",
+                      height: "1.3rem",
+                      borderRadius: "50%",
+                      border: item == cgColor ? "3px solid black" : "none",
+                      backgroundColor: item,
+                      marginRight: "0.3rem",
+                    }}
+                    onClick={async () => {
+                      if (cgColor == item) {
+                        await setCgColor("");
+                        return;
+                      }
+                      await setCgColor(item);
+                      setCgErrMsg("");
+                    }}
+                  ></div>
                 ))}
               </div>
             )}

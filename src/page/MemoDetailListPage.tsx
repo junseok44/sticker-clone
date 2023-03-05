@@ -11,6 +11,8 @@ import { observer } from "mobx-react";
 import MemoList from "../Components/Memo_List";
 import Memo_Search from "../Components/Memo_Search";
 import { useStateWithPromises } from "../lib/hooks";
+import { Button, ButtonGroup } from "@mui/material";
+import { StyledLink } from "../Components/Category/Category_List_Item";
 
 const MemoDetailPage = () => {
   const params = useParams();
@@ -28,9 +30,8 @@ const MemoDetailPage = () => {
 
   // param에서 name 찾아서 store에서 그 카테고리가 존재하는지 대조.
   useEffect(() => {
-    const currentCat = store.category.find(
-      (cat) => cat.name === params.category
-    );
+    console.log(params);
+    const currentCat = store.category.find((cat) => cat.id === params.category);
     if (currentCat) setCategory(currentCat);
   }, []);
 
@@ -47,7 +48,6 @@ const MemoDetailPage = () => {
   return (
     <div
       style={{
-        width: "25%",
         height: "100vh",
         padding: "1rem",
         boxSizing: "border-box",
@@ -72,7 +72,29 @@ const MemoDetailPage = () => {
               ></div>
             </div>
             <div>
-              <button
+              <ButtonGroup
+                variant="outlined"
+                aria-label="outlined button group"
+              >
+                <Button
+                  style={{ fontSize: "0.8rem" }}
+                  onClick={() =>
+                    addMemo(category.name, 20, 20, category.bgColor)
+                  }
+                >
+                  메모작성
+                </Button>
+                <Button
+                  style={{ fontSize: "0.8rem" }}
+                  onClick={onDeleteCategory}
+                >
+                  <StyledLink to="/"> 카테고리 삭제</StyledLink>
+                </Button>
+                <Button style={{ fontSize: "0.8rem" }}>
+                  <StyledLink to="/"> 돌아가기 </StyledLink>
+                </Button>
+              </ButtonGroup>
+              {/* <button
                 onClick={() => addMemo(category.name, 20, 20, category.bgColor)}
               >
                 이 태그로 메모작성
@@ -84,7 +106,7 @@ const MemoDetailPage = () => {
               </button>
               <button>
                 <Link to={"/"}>돌아가기</Link>
-              </button>
+              </button> */}
             </div>
           </div>
           <Memo_Search

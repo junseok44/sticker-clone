@@ -31,12 +31,12 @@ const App = ({ store }: { store: TtodoStore }) => {
 
   return (
     <Grid container>
-      <Grid item xs md={3}>
+      <Grid item xs={3}>
         <Outlet
           context={{ store, addMemo, changeZIndex, deleteCategory }}
         ></Outlet>
       </Grid>
-      <Grid item xs={12} md={9}>
+      <Grid item xs={9}>
         <MemoContainer store={store} addMemo={addMemo}></MemoContainer>
       </Grid>
     </Grid>

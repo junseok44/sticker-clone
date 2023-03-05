@@ -2,6 +2,7 @@ import React from "react";
 import { TdeleteCategory, TtodoStore } from "../../lib/types";
 import CategoryListItem from "./Category_List_Item";
 import { observer } from "mobx-react";
+import { Grid } from "@mui/material";
 
 interface MemoCategoryListProps {
   store: TtodoStore;
@@ -11,8 +12,19 @@ interface MemoCategoryListProps {
 const MemoCategoryList = ({ store, deleteCategory }: MemoCategoryListProps) => {
   return (
     <div>
-      카테고리
-      <div
+      카테고리<hr></hr>
+      <Grid container spacing={1}>
+        {store.category.map((cat) => (
+          <Grid item md={12} lg={6}>
+            <CategoryListItem
+              key={cat.id}
+              item={cat}
+              deleteCategory={deleteCategory}
+            ></CategoryListItem>
+          </Grid>
+        ))}
+      </Grid>
+      {/* <div
         style={{
           width: "100%",
           minHeight: "3rem",
@@ -29,7 +41,7 @@ const MemoCategoryList = ({ store, deleteCategory }: MemoCategoryListProps) => {
             deleteCategory={deleteCategory}
           ></CategoryListItem>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };
