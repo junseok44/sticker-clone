@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/sticker-clone/static/css/main.155a376f.css",
-    "main.js": "/sticker-clone/static/js/main.eaf2af9f.js",
+    "main.js": "/sticker-clone/static/js/main.45c2b926.js",
     "static/media/roboto-all-500-normal.woff": "/sticker-clone/static/media/roboto-all-500-normal.0ab669b7a0d19b178f57.woff",
     "static/media/roboto-all-700-normal.woff": "/sticker-clone/static/media/roboto-all-700-normal.a457fde362a540fcadff.woff",
     "static/media/roboto-all-400-normal.woff": "/sticker-clone/static/media/roboto-all-400-normal.c5d001fa922fa66a147f.woff",
@@ -36,10 +36,10 @@
     "static/media/roboto-greek-ext-700-normal.woff2": "/sticker-clone/static/media/roboto-greek-ext-700-normal.bd9854c751441ccc1a70.woff2",
     "index.html": "/sticker-clone/index.html",
     "main.155a376f.css.map": "/sticker-clone/static/css/main.155a376f.css.map",
-    "main.eaf2af9f.js.map": "/sticker-clone/static/js/main.eaf2af9f.js.map"
+    "main.45c2b926.js.map": "/sticker-clone/static/js/main.45c2b926.js.map"
   },
   "entrypoints": [
     "static/css/main.155a376f.css",
-    "static/js/main.eaf2af9f.js"
+    "static/js/main.45c2b926.js"
   ]
 }
