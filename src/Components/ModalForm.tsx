@@ -45,7 +45,9 @@ const ModalForm = ({
           <Button
             variant="contained"
             onClick={() => {
-              if (confirmFunction) confirmFunction();
+              if (cancelFunction) cancelFunction(false);
+
+              // if (confirmFunction) confirmFunction();
             }}
           >
             확인
