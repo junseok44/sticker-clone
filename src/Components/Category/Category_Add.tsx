@@ -84,7 +84,7 @@ const MemoCategoryAdd = ({
           // justifyContent="center"
           alignItems="flex-end"
         >
-          <Grid item xs={8}>
+          <Grid item xs={9}>
             <TextField
               id="standard-basic"
               label="카테고리 추가.."
@@ -100,7 +100,7 @@ const MemoCategoryAdd = ({
           </Grid>
           <Grid
             item
-            xs={4}
+            xs={3}
             container
             direction="column"
             alignItems="flex-start"

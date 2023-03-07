@@ -5,6 +5,9 @@ import { TaddMemo, TmovingObj, TtodoStore } from "../../lib/types";
 import { observer } from "mobx-react";
 import MemoAdd from "./Container_addModal";
 import ConfirmModal from "../ConfirmModal";
+import styled from "styled-components";
+import { throttle } from "lodash";
+import ModalForm from "../ModalForm";
 
 export const StoreContext = createContext<TtodoStore | null>(null);
 
@@ -21,7 +24,6 @@ const MemoContainer = ({
   const [currentMemoId, setcurrentMemoId] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isAddModal, setIsAddModal] = useState<boolean>(false);
-  const [isResetModal, setIsResetModal] = useState(false);
 
   const changePos = useCallback(
     (id: number, xPos: number, yPos: number) => {
@@ -45,24 +47,8 @@ const MemoContainer = ({
   );
 
   const onMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      if (movingObj !== null) {
-        // console.log("moving", e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-        // FIXME e.nativeEvent.offsetX e.nativeEvent.offsetY가 계속 바뀐다.
-        // e를 보내는게 컨테이너였다가 헤더였다가.. 그러니까 e의 인식이.
-        e.stopPropagation();
-
-        if (containerRef.current)
-          changePos(
-            movingObj.id,
-            e.nativeEvent.pageX -
-              containerRef.current?.getBoundingClientRect().x -
-              movingObj.offsetX,
-            e.nativeEvent.pageY - movingObj.offsetY
-          );
-
-        store.changeZIndex(movingObj.id);
-      }
+    (id: number, x: number, y: number, dx: number, dy: number) => {
+      store.changePosition(id, x + dx, y + dy);
     },
     [movingObj, changePos]
   );
@@ -80,12 +66,15 @@ const MemoContainer = ({
     store.deleteMemo(id);
   }, []);
 
+  // 문제. 위치 position 정보를 계속 저장하고 있어야 하는데
+  // 다시 position 0 0 에서 시작하니까.
+
   return (
     <div
       ref={containerRef}
       style={{
         position: "relative",
-        border: "1px solid black",
+        // border: "1px solid black",
         height: "100vh",
       }}
       onClick={() => {
@@ -94,7 +83,7 @@ const MemoContainer = ({
       }}
       onMouseMove={(e: React.MouseEvent) => {
         // 개별 메모 아이템 이동.
-        onMouseMove(e);
+        // onMouseMove(e);
       }}
     >
       {isAddModal && (
@@ -106,8 +95,11 @@ const MemoContainer = ({
           ></MemoAdd>
         </StoreContext.Provider>
       )}
-
+      {/* <ModalForm title="hello" content="정말 취소?">
+        <div>{movingObj?.id}</div>
+      </ModalForm> */}
       <StoreContext.Provider value={store}>
+        {/* <Draggable className="drag">dfdf</Draggable> */}
         {store.todo.map((todo) => (
           <Memo
             currentMemoId={currentMemoId}

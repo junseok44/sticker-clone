@@ -19,6 +19,7 @@ export class todoItem implements Ttodo {
   height = 200;
   category = "";
   bgColor = palette.grey;
+  id = v4();
 
   constructor(
     zIndex: number,

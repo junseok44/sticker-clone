@@ -27,12 +27,6 @@ const MemoCategoryBar = ({
       >
         {item.category ? "#" + item.category : "#태그 추가"}
       </div>
-      {isCategoryModalOpen && (
-        <MemoCatModal
-          id={item.date}
-          setModal={setIsCategoryModalOpen}
-        ></MemoCatModal>
-      )}
     </div>
   );
 };

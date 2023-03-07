@@ -17,6 +17,7 @@ export interface TtodoStore {
 }
 
 export interface Ttodo {
+  id: string;
   msg: string;
   date: number;
   x: number;

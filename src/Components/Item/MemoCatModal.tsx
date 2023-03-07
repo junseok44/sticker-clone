@@ -12,32 +12,13 @@ import { CircleItem } from "../Category/Category";
 import styled from "styled-components";
 import { Tcategory } from "../../lib/types";
 import MemoCategoryAdd from "../Category/Category_Add";
+import ModalForm from "../ModalForm";
+import { Grid } from "@mui/material";
 
-const CircleItemContainer = styled.div`
-  display: flex;
-`;
-
-const CircleItem2 = styled(CircleItem)<{ selectedColor: string }>`
-  border: ${(props) =>
-    props.selectedColor == props.bgColor ? "2px solid black" : "none"};
-`;
-
-const ModalContainer = styled.div`
-  width: 100%;
-  background-color: white;
-  position: absolute;
-  min-height: 2rem;
-  top: 1.5rem;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  z-index: 100;
-`;
-
-const ModalOverlay = styled.div`
-  width: 200%;
-  height: 200%;
-  position: absolute;
-  z-index: -10;
-  background-color: black;
+const StyledGrid = styled(Grid)`
+  &:hover {
+    color: red;
+  }
 `;
 
 const MemoCatModal = ({
@@ -60,29 +41,53 @@ const MemoCatModal = ({
   };
 
   return (
-    <ModalContainer onClick={(e) => e.stopPropagation()}>
-      카테고리 설정
-      <MemoCategoryAdd
-        store={store}
-        setModal={setModal}
-        memoId={memoId}
-      ></MemoCategoryAdd>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)" }}>
-        {store?.category.map((cat) => (
-          <div
-            style={{
-              color: cat.bgColor,
-              cursor: "pointer",
-            }}
-            onClick={(e) => {
-              onClick(e, cat.id);
-            }}
-          >
-            #{cat.name}
-          </div>
-        ))}
-      </div>
-    </ModalContainer>
+    <div style={{ position: "absolute", zIndex: 100 }}>
+      <ModalForm title="카테고리 설정" cancelFunction={setModal}>
+        <div>
+          <MemoCategoryAdd
+            store={store}
+            setModal={setModal}
+            memoId={memoId}
+          ></MemoCategoryAdd>
+          <Grid container>
+            {store?.category.map((item) => (
+              <StyledGrid
+                item
+                sx={{ cursor: "pointer", color: "black" }}
+                sm={6}
+                onClick={(e) => onClick(e, item.id)}
+              >
+                {item.name}
+              </StyledGrid>
+            ))}
+          </Grid>
+        </div>
+      </ModalForm>
+    </div>
+
+    // <ModalContainer onClick={(e) => e.stopPropagation()}>
+    //   카테고리 설정
+    //   <MemoCategoryAdd
+    //     store={store}
+    //     setModal={setModal}
+    //     memoId={memoId}
+    //   ></MemoCategoryAdd>
+    //   <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)" }}>
+    //     {store?.category.map((cat) => (
+    //       <div
+    //         style={{
+    //           color: cat.bgColor,
+    //           cursor: "pointer",
+    //         }}
+    //         onClick={(e) => {
+    //           onClick(e, cat.id);
+    //         }}
+    //       >
+    //         #{cat.name}
+    //       </div>
+    //     ))}
+    //   </div>
+    // </ModalContainer>
   );
 };
 

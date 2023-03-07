@@ -13,7 +13,7 @@ interface MemoCategoryListProps {
 
 const MemoCategoryList = ({ store, deleteCategory }: MemoCategoryListProps) => {
   return (
-    <div style={{ maxHeight: "6rem", overflow: "auto" }}>
+    <div style={{ maxHeight: "7rem", overflow: "auto" }}>
       <ListSubheader component="div" id="nested-list-subheader">
         카테고리
         <Divider></Divider>

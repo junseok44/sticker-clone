@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { TaddMemo, TmovingObj, Ttodo } from "../../lib/types";
 import { observer } from "mobx-react";
 import { useResizeDetector } from "react-resize-detector";
@@ -7,6 +7,8 @@ import { palette } from "../../lib/palette";
 import { MutableRefObject } from "react";
 import MemoCatModal from "./MemoCatModal";
 import MemoCategoryBar from "./MemoCategoryBar";
+import interact from "interactjs";
+import { StoreContext } from "../Memo_Container/Container";
 
 const MemoContainer = styled.div<{
   width: number;
@@ -15,6 +17,8 @@ const MemoContainer = styled.div<{
   top: number;
   zIndex: number;
 }>`
+  touch-action: none;
+  user-select: none;
   box-sizing: border-box;
   width: ${(props) => props.width + "px"};
   height: ${(props) => props.height + "px"};
@@ -27,7 +31,6 @@ const MemoContainer = styled.div<{
   top: ${(props) => props.top + "px"};
   z-index: ${(props) => props.zIndex};
   resize: both;
-  overflow: auto;
   padding: 3rem 1rem 1rem;
   border-radius: 5px;
   overflow: hidden;
@@ -111,7 +114,13 @@ interface TMemoProps {
     width: number | undefined,
     height: number | undefined
   ) => void;
-  onMouseMove: (e: React.MouseEvent) => void;
+  onMouseMove: (
+    id: number,
+    x: number,
+    y: number,
+    dx: number,
+    dy: number
+  ) => void;
 }
 
 const Memo = ({
@@ -124,9 +133,14 @@ const Memo = ({
   changeSize,
   currentMemoId,
   setcurrentMemoId,
+  onMouseMove,
 }: TMemoProps) => {
   const [memoInput, setmemoInput] = useState<string>(item.msg);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [position, setPosition] = useState({
+    x: 0,
+    y: 0,
+  });
 
   // 인풋 바뀔때 store에 있는 msg업데이트.
   useEffect(() => {
@@ -142,11 +156,11 @@ const Memo = ({
   // header에 클릭했을때 movingObj가 등록된다.
   const onMouseDown = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setmovingObj({
-      id: item.date,
-      offsetX: e.nativeEvent.offsetX,
-      offsetY: e.nativeEvent.offsetY,
-    });
+    // setmovingObj({
+    //   id: item.date,
+    //   offsetX: e.nativeEvent.offsetX,
+    //   offsetY: e.nativeEvent.offsetY,
+    // });
   };
   const onMouseUp = () => {
     setmovingObj(null);
@@ -170,66 +184,83 @@ const Memo = ({
     [item, addMemo]
   );
 
+  interact(`.${"t" + item.id.substring(0, 5)}`).draggable({
+    listeners: {
+      start(event) {},
+      move(event) {
+        setPosition({
+          x: (position.x += event.dx),
+          y: (position.y += event.dy),
+        });
+        onMouseMove(item.date, item.x, item.y, event.dx, event.dy);
+        // event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
+      },
+    },
+  });
+
   return (
-    <MemoContainer
-      width={item.width}
-      height={item.height}
-      top={item.y}
-      left={item.x}
-      zIndex={item.zIndex}
-      ref={ref}
-      onClick={(e) => {
-        e.stopPropagation();
-        setcurrentMemoId(item.date);
-        changeZIndex(item.date);
-      }}
-      onMouseUp={onMouseUp}
-      onMouseOut={onMouseUp}
-    >
-      <Memo_Header
-        bgColor={item.bgColor}
-        isFocus={currentMemoId === item.date}
-        onMouseDown={onMouseDown}
+    <>
+      <MemoContainer
+        width={item.width}
+        height={item.height}
+        top={item.y}
+        left={item.x}
+        zIndex={item.zIndex}
+        ref={ref}
+        onClick={(e) => {
+          e.stopPropagation();
+          setcurrentMemoId(item.date);
+        }}
+        onMouseDown={(e) => {
+          changeZIndex(item.date);
+          onMouseDown(e);
+        }}
         onMouseUp={onMouseUp}
+        className={"t" + item.id.substring(0, 5)}
       >
-        <Header_left>
-          <Header_Button onClick={onAddMemo}>+</Header_Button>
-        </Header_left>
-        <Header_right>
-          <Header_Button
-            onClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}
-          >
-            -
-          </Header_Button>
-          <Header_Button
-            onClick={(e) => {
-              e.stopPropagation();
-              deleteMemo(item.date);
-            }}
-          >
-            X
-          </Header_Button>
-        </Header_right>
-      </Memo_Header>
-      <MemoCategoryBar
-        item={item}
-        isCategoryModalOpen={isCategoryModalOpen}
-        setIsCategoryModalOpen={setIsCategoryModalOpen}
-      ></MemoCategoryBar>
-      <Memo_Text
-        value={memoInput}
-        onChange={onChangeMemo}
-        isFocus={currentMemoId === item.date}
-      ></Memo_Text>
-      {/* <Memo_Footer isFocus={currentMemoId === item.date}>
-        <Btn>+</Btn>
-        <Btn>+</Btn>
-        <Btn>+</Btn>
-        <Btn>+</Btn>
-        <Btn>+</Btn>
-        <Btn>+</Btn>
-      </Memo_Footer> */}
-    </MemoContainer>
+        <Memo_Header
+          bgColor={item.bgColor}
+          isFocus={currentMemoId === item.date}
+          onMouseDown={onMouseDown}
+          onMouseUp={onMouseUp}
+        >
+          <Header_left>
+            <Header_Button onClick={onAddMemo}>+</Header_Button>
+          </Header_left>
+          <Header_right>
+            <Header_Button
+              onClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}
+            >
+              -
+            </Header_Button>
+            <Header_Button
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteMemo(item.date);
+              }}
+            >
+              X
+            </Header_Button>
+          </Header_right>
+        </Memo_Header>
+        <MemoCategoryBar
+          item={item}
+          isCategoryModalOpen={isCategoryModalOpen}
+          setIsCategoryModalOpen={setIsCategoryModalOpen}
+        ></MemoCategoryBar>
+        <Memo_Text
+          value={memoInput}
+          onChange={onChangeMemo}
+          isFocus={currentMemoId === item.date}
+        ></Memo_Text>
+      </MemoContainer>
+      {isCategoryModalOpen && (
+        <MemoCatModal
+          id={item.date}
+          setModal={setIsCategoryModalOpen}
+        ></MemoCatModal>
+      )}
+    </>
   );
 };
 
