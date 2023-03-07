@@ -8,6 +8,7 @@ import {
   RouterProvider,
   Route,
   Link,
+  Navigate,
 } from "react-router-dom";
 import { createRoutesFromElements } from "react-router";
 import MemoHome from "./page/MemoHomeListPage";
@@ -32,7 +33,7 @@ const router = createBrowserRouter(
           element={<MemoDetailPage></MemoDetailPage>}
         ></Route>
       </Route>
-      <Route path="*" element={<div>error!!</div>}></Route>
+      <Route path="*" element={<Navigate to="/"></Navigate>}></Route>
     </>
   ),
   { basename: "/sticker-clone" }
