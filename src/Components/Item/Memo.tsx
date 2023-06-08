@@ -101,12 +101,12 @@ const Btn = styled.button`
 const Header_Button = styled(Btn)``;
 
 interface TMemoProps {
-  currentMemoId: number | null;
-  setcurrentMemoId: React.Dispatch<React.SetStateAction<number | null>>;
+  currentMemoId: string | null;
+  setcurrentMemoId: React.Dispatch<React.SetStateAction<string | null>>;
   item: Ttodo;
   setmovingObj: React.Dispatch<React.SetStateAction<TmovingObj | null>>;
   editMemo: (id: number, msg: string) => void;
-  deleteMemo: (id: number) => void;
+  deleteMemo: (id: string) => void;
   addMemo: TaddMemo;
   changeZIndex: (id: number) => void;
   changeSize: (
@@ -115,7 +115,7 @@ interface TMemoProps {
     height: number | undefined
   ) => void;
   onMouseMove: (
-    id: number,
+    id: string,
     x: number,
     y: number,
     dx: number,
@@ -192,14 +192,14 @@ const Memo = ({
           x: (position.x += event.dx),
           y: (position.y += event.dy),
         });
-        onMouseMove(item.date, item.x, item.y, event.dx, event.dy);
+        onMouseMove(item.id, item.x, item.y, event.dx, event.dy);
         // event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
       },
     },
   });
   //DFDF
   return (
-    <>
+    <div>
       <MemoContainer
         width={item.width}
         height={item.height}
@@ -209,7 +209,7 @@ const Memo = ({
         ref={ref}
         onClick={(e) => {
           e.stopPropagation();
-          setcurrentMemoId(item.date);
+          setcurrentMemoId(item.id);
         }}
         onMouseDown={(e) => {
           changeZIndex(item.date);
@@ -220,7 +220,7 @@ const Memo = ({
       >
         <Memo_Header
           bgColor={item.bgColor}
-          isFocus={currentMemoId === item.date}
+          isFocus={currentMemoId === item.id}
           onMouseDown={onMouseDown}
           onMouseUp={onMouseUp}
         >
@@ -236,7 +236,7 @@ const Memo = ({
             <Header_Button
               onClick={(e) => {
                 e.stopPropagation();
-                deleteMemo(item.date);
+                deleteMemo(item.id);
               }}
             >
               X
@@ -251,7 +251,7 @@ const Memo = ({
         <Memo_Text
           value={memoInput}
           onChange={onChangeMemo}
-          isFocus={currentMemoId === item.date}
+          isFocus={currentMemoId === item.id}
         ></Memo_Text>
       </MemoContainer>
       {isCategoryModalOpen && (
@@ -260,7 +260,7 @@ const Memo = ({
           setModal={setIsCategoryModalOpen}
         ></MemoCatModal>
       )}
-    </>
+    </div>
   );
 };
 

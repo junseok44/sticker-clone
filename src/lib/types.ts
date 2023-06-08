@@ -6,9 +6,9 @@ export interface TtodoStore {
   loadLocalStorage: () => void;
   addMemo: TaddMemo;
   editMemo: (id: number, msg: string) => void;
-  deleteMemo: (id: number) => void;
+  deleteMemo: (id: string) => void;
   resetMemoList: () => void;
-  changePosition: (id: number, xPos: number, yPos: number) => void;
+  changePosition: (id: string, xPos: number, yPos: number) => void;
   changeZIndex: (id: number) => void;
   changeSize: (id: number, width: number, height: number) => void;
   addCategory: (name: string, bgColor: string) => Tcategory;

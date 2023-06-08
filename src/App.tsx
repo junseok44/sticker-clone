@@ -4,6 +4,7 @@ import { observer } from "mobx-react";
 import { Outlet } from "react-router-dom";
 import MemoContainer from "./Components/Memo_Container/Container";
 import { Grid } from "@mui/material";
+import { todoItem } from "./store";
 
 const setFromLocalStorage = (type: "todo" | "category", store: TtodoStore) => {
   const parsedItem = JSON.parse(localStorage.getItem(type) || "");
@@ -17,6 +18,8 @@ const App = ({ store }: { store: TtodoStore }) => {
     },
     [store]
   );
+
+  useEffect(() => {}, []);
 
   const changeZIndex = useCallback(
     (id: number) => {
@@ -36,7 +39,7 @@ const App = ({ store }: { store: TtodoStore }) => {
           context={{ store, addMemo, changeZIndex, deleteCategory }}
         ></Outlet>
       </Grid>
-      <Grid item xs={9}>
+      <Grid item xs={12} md={9}>
         <MemoContainer store={store} addMemo={addMemo}></MemoContainer>
       </Grid>
     </Grid>

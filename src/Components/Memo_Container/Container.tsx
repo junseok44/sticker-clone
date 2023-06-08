@@ -21,12 +21,12 @@ const MemoContainer = ({
   // 지금 움직이고 있는 메모 객체에 대한 정보.
   const [movingObj, setmovingObj] = useState<TmovingObj | null>(null);
   // 애니메이션을 위한 현재 선택 메모
-  const [currentMemoId, setcurrentMemoId] = useState<number | null>(null);
+  const [currentMemoId, setcurrentMemoId] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isAddModal, setIsAddModal] = useState<boolean>(false);
 
   const changePos = useCallback(
-    (id: number, xPos: number, yPos: number) => {
+    (id: string, xPos: number, yPos: number) => {
       store.changePosition(id, xPos, yPos);
     },
     [store]
@@ -47,7 +47,7 @@ const MemoContainer = ({
   );
 
   const onMouseMove = useCallback(
-    (id: number, x: number, y: number, dx: number, dy: number) => {
+    (id: string, x: number, y: number, dx: number, dy: number) => {
       store.changePosition(id, x + dx, y + dy);
     },
     [movingObj, changePos]
@@ -62,7 +62,7 @@ const MemoContainer = ({
     [store]
   );
 
-  const deleteMemo = useCallback((id: number) => {
+  const deleteMemo = useCallback((id: string) => {
     store.deleteMemo(id);
   }, []);
 
@@ -104,7 +104,7 @@ const MemoContainer = ({
           <Memo
             currentMemoId={currentMemoId}
             setcurrentMemoId={setcurrentMemoId}
-            key={todo.date}
+            key={todo.id}
             item={todo}
             setmovingObj={setmovingObj}
             editMemo={editMemo}

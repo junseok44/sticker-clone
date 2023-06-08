@@ -88,6 +88,31 @@ export class todoStore implements TtodoStore {
     // 지금 로컬스토리지에는 todo도 없고, category도 없다.
     this.todo = JSON.parse(this.localStorage?.getItem("todo") || "[]");
     this.category = JSON.parse(this.localStorage?.getItem("category") || "[]");
+
+    if (this.todo.length == 0) {
+      const guide1 = new todoItem(1, "가이드", 100, 100, "#81ecec");
+      guide1.msg =
+        "왼쪽 상단의 메뉴 버튼을 눌러보세요! 메모를 추가할 수 있습니다.";
+      const guide2 = new todoItem(2, "가이드", 350, 100, "#81ecec");
+      guide2.msg =
+        "스티커를 클릭하면 스티커 메뉴가 내려옵니다. 각각 메모 추가, 카테고리 설정, 메모 삭제기능이에요.";
+
+      const guide3 = new todoItem(3, "가이드", 600, 100, "#81ecec");
+      guide3.msg = "메모를 클릭한 상태로 드래그해서 스티커를 움직여보세요!.";
+
+      this.todo.push(guide1);
+      this.todo.push(guide2);
+      this.todo.push(guide3);
+    }
+
+    if (this.category.length == 0) {
+      const guideCategory: Tcategory = {
+        id: v4(),
+        bgColor: "#81ecec",
+        name: "가이드",
+      };
+      this.category.push(guideCategory);
+    }
   }
 
   addMemo(category: string, x: number, y: number, bgColor?: string) {
@@ -100,16 +125,16 @@ export class todoStore implements TtodoStore {
     if (todoItem123) todoItem123.msg = msg;
   }
 
-  deleteMemo(id: number) {
-    this.todo = this.todo.filter((item) => item.date !== id);
+  deleteMemo(id: string) {
+    this.todo = this.todo.filter((item) => item.id !== id);
   }
 
   resetMemoList() {
     this.todo = [];
   }
 
-  changePosition(id: number, xPos: number, yPos: number) {
-    const index = this.todo.findIndex((item) => item.date === id);
+  changePosition(id: string, xPos: number, yPos: number) {
+    const index = this.todo.findIndex((item) => item.id === id);
     this.todo[index].x = xPos;
     this.todo[index].y = yPos;
   }

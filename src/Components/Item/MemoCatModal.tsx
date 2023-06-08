@@ -41,7 +41,15 @@ const MemoCatModal = ({
   };
 
   return (
-    <div style={{ position: "absolute", zIndex: 100 }}>
+    <div
+      style={{
+        position: "absolute",
+        top: "40px",
+        right: "50px",
+        zIndex: 1,
+        overflow: "visible",
+      }}
+    >
       <ModalForm title="카테고리 설정" cancelFunction={setModal}>
         <div>
           <MemoCategoryAdd
